@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Posicionamiento absoluto</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: lightblue;
+    }
+
+    h2 {
+      background-color: blue;
+      color: white;
+      padding: 5px;
+      font-size: 18px;
+    }
+
+    /* Contenedor principal */
+    #contenedorInternoX {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 70%;
+      height: 70%;
+      transform: translate(-50%, -50%);
+      background-color: transparent;
+    }
+
+    /* Contenedor interno 1 */
+    .contenedor1 {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      width: 45%;
+      height: 45%;
+      background-color: aqua;
+      padding: 15px;
+      font-weight: bold;
+    }
+
+    /* Contenedor interno 3 */
+    .contenedor3 {
+      position: absolute;
+      bottom: 5%;
+      left: 15%;
+      width: 75%;
+      height: 55%;
+      background-color: gray;
+      opacity: 0.7;
+      padding: 15px;
+    }
+
+    /* Contenedor interno 2 con rotación */
+    .contenedor2 {
+      position: absolute;
+      bottom: -5%;
+      right: -5%;
+      width: 55%;
+      height: 55%;
+      background-color: lightgreen;
+      transform: rotateZ(-10deg);
+      padding: 15px;
+    }
+
+    .contenedor2 img {
+      width: 30%;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Estructura de posicionamiento absoluto pero adaptable al medio de presentación.</h2>
+
+  <div id="contenedorInternoX">
+    <div class="contenedor1">
+      Contenedor interno 1.<br>
+      El Templo del Gran Jaguar o Templo I, es la designación que se le da a una de las principales estructuras de Tikal, la ciudad más grande del período clásico de la civilización maya precolombina en Mesoamérica. Está ubicado en Petén en el norte de Guatemala. Se le conoce como el Templo del Gran Jaguar debido a un dintel que representa a un rey sentado en un trono de jaguar. 
+    </div>
+
+    <div class="contenedor3">
+      <b>Contenedor interno 3.</b><br>
+ El Templo I es una estructura piramidal escalonada de piedra caliza de estilo típico del Petén que data aproximadamente del año 732 d. C. El Templo I servía como un lugar ceremonial y ritual, considerado la puerta al inframundo, se sabe que lo que se encontró dentro de dicha construcción fueron los bienes del antiguo líder, así como sus restos.    </div>
+
+    <div class="contenedor2">
+      <b>Contenedor interno 2</b><br>
+      <img src="Templo.jpeg" alt="Templo">
+      <img src="Templo.jpeg" alt="Templo">
+      <img src="Templo.jpeg" alt="Templo">
+    </div>
+  </div>
+</body>
+</html>
