@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculadora con Acumulador</title>
+  <meta charset="UTF-8">
+  <script>
+    let acumulador = 0; // valor acumulado
+
+    function escribirNumero(num) {
+      let display = document.getElementById("display");
+      display.value += num;
+    }
+
+    function sumarAcumulador() {
+      let display = document.getElementById("display");
+      acumulador += parseInt(display.value) || 0;
+      display.value = "";
+    }
+
+    function mostrarAcumulador() {
+      document.getElementById("display").value = acumulador;
+    }
+
+    function borrarAcumulador() {
+      acumulador = 0;
+      alert("Acumulador borrado.");
+    }
+
+    function borrarDisplay() {
+      document.getElementById("display").value = "";
+    }
+  </script>
+</head>
+<body>
+  <div style="width:300px; margin:auto; text-align:center; background:#eee; padding:10px;">
+    <input type="text" id="display" readonly style="width:95%; font-size:20px; text-align:right;"><br><br>
+
+    <div style="background:lightblue; padding:10px;">
+      <button onclick="escribirNumero(1)">1</button>
+      <button onclick="escribirNumero(2)">2</button>
+      <button onclick="escribirNumero(3)">3</button><br>
+      <button onclick="escribirNumero(4)">4</button>
+      <button onclick="escribirNumero(5)">5</button>
+      <button onclick="escribirNumero(6)">6</button><br>
+      <button onclick="escribirNumero(7)">7</button>
+      <button onclick="escribirNumero(8)">8</button>
+      <button onclick="escribirNumero(9)">9</button><br>
+      <button onclick="escribirNumero(0)">0</button>
+    </div>
+
+    <div style="background:lightyellow; padding:10px; margin-top:10px;">
+      <button onclick="sumarAcumulador()">+Acumulador</button>
+      <button onclick="mostrarAcumulador()">Muestra acumulador</button><br><br>
+      <button onclick="borrarAcumulador()">Borra acumulador</button>
+      <button onclick="borrarDisplay()">Borra display</button>
+    </div>
+  </div>
+</body>
+</html>

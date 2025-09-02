@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Operaciones entre inputs</title>
+  <meta charset="UTF-8">
+  <script>
+    // Función para obtener los valores como números
+    function obtenerValores() {
+      let v1 = parseFloat(document.getElementById("entrada1").value) || 0;
+      let v2 = parseFloat(document.getElementById("entrada2").value) || 0;
+      let v3 = parseFloat(document.getElementById("entrada3").value) || 0;
+      return [v1, v2, v3];
+    }
+
+    function suma() {
+      let [v1, v2, v3] = obtenerValores();
+      document.getElementById("resultado").value = v1 + v2 + v3;
+    }
+
+    function promedio() {
+      let [v1, v2, v3] = obtenerValores();
+      document.getElementById("resultado").value = (v1 + v2 + v3) / 3;
+    }
+
+    function mayor() {
+      let [v1, v2, v3] = obtenerValores();
+      document.getElementById("resultado").value = Math.max(v1, v2, v3);
+    }
+  </script>
+</head>
+<body>
+  <h3>Introducir un valor en los cuadros de texto y luego pulsar el botón para ejecutar la función correspondiente.</h3>
+  
+  <div style="background-color: lightblue; padding: 10px; width: 400px;">
+    Entrada 1: <input type="text" id="entrada1" value="0"><br><br>
+    Entrada 2: <input type="text" id="entrada2" value="0"><br><br>
+    Entrada 3: <input type="text" id="entrada3" value="0"><br><br>
+    Resultado: <input type="text" id="resultado" readonly><br><br>
+  </div>
+  
+  <button onclick="suma()">Suma</button>
+  <button onclick="promedio()">Promedia</button>
+  <button onclick="mayor()">Mayor</button>
+</body>
+</html>

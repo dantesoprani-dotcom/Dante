@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicio Variables simples</title>
+  <style>
+    #resultado {
+      background-color: lightblue;
+      border: 2px solid black;
+      width: 95%;
+      height: 150px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botones -->
+  <button onclick="declararZ()">var z;</button>
+  <button onclick="declararQ()">let q;</button>
+  <button onclick="a=1; mostrar('a', a);">var a=1;</button>
+  <button onclick="declararB()">var b="1";</button>
+  <button onclick="c=2; mostrar('c', c);">var c=2;</button>
+  <button onclick="suma1=a+b; mostrar('suma1', suma1);">suma1=a+b;</button>
+  <button onclick="suma2=a+c; mostrar('suma2', suma2);">suma2=a+c;</button>
+
+  <!-- Área de resultados -->
+  <div id="resultado"></div>
+
+  <script>
+    // Variables globales
+    var z;
+    let q;
+    var a, b, c, suma1, suma2;
+
+    function declararZ() {
+      z = "otro valor para z";
+      mostrar("z", z);
+    }
+
+    function declararQ() {
+      q = "valor con let q";
+      mostrar("q", q);
+    }
+
+    function declararB() {
+      b = "1";
+      mostrar("b", b);
+    }
+
+    function mostrar(nombre, valor) {
+      document.getElementById("resultado").innerHTML =
+        "<h3>Valor de " + nombre + ": " + valor + "</h3>" +
+        "<h3>Tipo de " + nombre + ": " + typeof valor + "</h3>";
+    }
+  </script>
+
+</body>
+</html>
