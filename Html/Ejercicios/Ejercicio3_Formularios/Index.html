@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Html</title>
+</head>
+<body>
+
+    <h1>Formulario Html</h1>
+
+    <!-- ENTRADAS SIMPLES -->
+    <h3>Entradas simples</h3>
+    <form>
+
+        <label>Apellido:</label>
+        <input type="text" name="apellido"><br><br>
+
+        <label>Contraseña:</label>
+        <input type="password" name="clave"><br><br>
+
+        <label>Oculto:</label>
+        <input type="hidden" name="oculto" value="valorOculto"><br><br>
+
+        <label>Campo deshabilitado:</label>
+        <input type="text" value="valor deshabilitado" disabled><br><br>
+
+        <label>Campo de solo lectura:</label>
+        <input type="text" value="valorSoloLectura" readonly><br><br>
+
+        <!-- ENTRADAS DE SELECCIÓN -->
+        <h3>Entradas de selección</h3>
+
+        <label><input type="checkbox" name="deportes"> Practica deportes</label><br>
+        <label><input type="checkbox" name="musica"> Practica musical</label><br>
+        <label><input type="checkbox" name="pintura"> Practica de pintura artística</label><br><br>
+
+        <label>Sexo</label><br>
+        <input type="radio" name="sexo" value="M"> Masculino
+        <input type="radio" name="sexo" value="F" checked> Femenino<br><br>
+
+        <label>Estudios cursados</label><br>
+        <select name="estudios">
+            <option>Primarios</option>
+            <option>Secundarios</option>
+            <option>Universitarios</option>
+        </select><br><br>
+
+        <label>Fecha y Hora</label><br>
+        <input type="date" name="fecha">
+        <input type="time" name="hora"><br><br>
+
+        <label>Color</label><br>
+        <input type="color" name="color"><br><br>
+
+        <!-- ENTRADAS CON VALIDACIÓN -->
+        <h3>Entradas con validación</h3>
+
+        <label>Comentario (<b>validación</b> por requerido):</label>
+        <input type="text" name="comentario" required><br><br>
+
+        <label>Email con doble validación (x@x y required):</label>
+        <input type="email" name="correo" required><br><br>
+
+        <label>Número entero limitado (validación por tipo numérico y cotas):</label>
+        <input type="number" name="entero" min="1" max="100"><br><br>
+
+        <label>Número decimal:</label>
+        <input type="number" step="0.01" name="decimal"><br><br>
+
+        <label>URL (<b>validación</b> por requerido, escribir http://):</label>
+        <input type="url" name="web" required><br><br>
+
+        <label>Pattern de validación:</label>
+        <input type="text" pattern="[A-Za-z]{3,}" placeholder="mínimo 3 letras"><br><br>
+
+        <label>Pattern de validación:</label>
+        <input type="tel" pattern="(\+54)[0-9]{10}" placeholder="(+54) 11 44445555"><br><br>
+
+        <input type="submit" value="Enviar">
+        <input type="reset" value="Restablecer">
+
+    </form>
+
+</body>
+</html>

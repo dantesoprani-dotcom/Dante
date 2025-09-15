@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      background-color: #007580;
+      color: black;
+      padding: 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0;
+      padding: 1rem;
+      background-color: #007580;
+      color: black;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 1rem;
+      background-color: #c4c4c4;
+      gap: 10px;
+      overflow-y: auto;
+    }
+
+    .campo {
+      flex: 1 1 23%;
+      min-width: 220px;
+      background-color: #d4d4d4;
+      padding: 10px;
+      border: 1px solid #888;
+    }
+
+    .campo label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .botones {
+      display: flex;
+      justify-content: space-around;
+      padding: 1rem;
+      background-color: #c4c4c4;
+    }
+
+    .botones input {
+      padding: 10px 40px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: #007580;
+      color: black;
+      text-align: center;
+      padding: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .campo {
+        flex: 1 1 45%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .campo {
+        flex: 1 1 100%;
+      }
+
+      form {
+        overflow-y: scroll;
+        max-height: 80vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Formulario</h1>
+
+  <form>
+    <div class="campo">
+      <label>1 Apellido:</label>
+      <input type="text">
+    </div>
+    <div class="campo">
+      <label>2 Nombres:</label>
+      <input type="text">
+    </div>
+    <div class="campo">
+      <label>3 Contraseña:</label>
+      <input type="password">
+    </div>
+    <div class="campo">
+      <label>4 Campo deshabilitado:</label>
+      <input type="text" value="valor deshabilitado" disabled>
+    </div>
+    <div class="campo">
+      <label>5 Fecha:</label>
+      <input type="date">
+    </div>
+    <div class="campo">
+      <label>6 DNI:</label>
+      <input type="text">
+    </div>
+    <div class="campo">
+      <label>7 Actividades extracurriculares</label>
+      <label><input type="checkbox"> Música</label><br>
+      <label><input type="checkbox"> Pintura artística</label>
+    </div>
+    <div class="campo">
+      <label>8 Sexo:</label>
+      <label><input type="radio" name="sexo"> Masculino</label><br>
+      <label><input type="radio" name="sexo"> Femenino</label>
+    </div>
+    <div class="campo">
+      <label><strong>9 Vacío</strong></label>
+    </div>
+    <div class="campo">
+      <label>10 Estudios cursados</label>
+      <select>
+        <option>Primarios</option>
+        <option>Secundarios</option>
+        <option>Universitarios</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label>11 Área de desempeño</label>
+      <select>
+        <option>Administración</option>
+        <option>Producción</option>
+        <option>RRHH</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label>12 Turno</label>
+      <select>
+        <option>Mañana</option>
+        <option>Tarde</option>
+        <option>Noche</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label>13 Conduce</label>
+      <label><input type="radio" name="conduce"> SI</label>
+      <label><input type="radio" name="conduce"> No</label>
+    </div>
+
+    <div class="botones" style="flex: 1 1 100%;">
+      <input type="submit" value="Enviar">
+      <input type="reset" value="Reset">
+    </div>
+  </form>
+
+  <footer>
+    Pie de formulario
+  </footer>
+
+</body>
+</html>

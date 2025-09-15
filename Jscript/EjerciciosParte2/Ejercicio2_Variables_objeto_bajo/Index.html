@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Personas</title>
+  <style>
+    body {font-family: Arial, sans-serif;}
+    .contenedor {
+      display: flex;
+      gap: 10px;
+    }
+    .formulario, .presentacion {
+      padding: 10px;
+      border: 1px solid #9cc;
+      background-color: #f7fdfd;
+      width: 50%;
+    }
+    .presentacion {
+      display: none; /* empieza oculto */
+    }
+    .fila {margin-bottom: 5px;}
+    .fila label {display:inline-block;width:120px;}
+  </style>
+</head>
+<body>
+<h2>Ingreso de datos de personas</h2>
+
+<div class="contenedor">
+  <div class="formulario">
+    <div class="fila">
+      <label>Nombre:</label><input type="text" id="nombre">
+    </div>
+    <div class="fila">
+      <label>Apellido:</label><input type="text" id="apellido">
+    </div>
+    <div class="fila">
+      <label>Fecha Nac:</label><input type="date" id="fecha">
+    </div>
+
+    <button onclick="cargarPersona()">Cargar persona</button>
+    <button onclick="listarPersonas()">Listar personas</button>
+    <button onclick="togglePresentacion()">Ocultar/Mostrar presentación</button>
+  </div>
+
+  <div class="presentacion" id="presentacion">
+    <!-- aquí se listan dinámicamente -->
+  </div>
+</div>
+
+<script>
+  // array de objetos persona
+  let arregloPersonas = [];
+
+  function cargarPersona() {
+    const nombre = document.getElementById('nombre').value.trim();
+    const apellido = document.getElementById('apellido').value.trim();
+    const fecha = document.getElementById('fecha').value;
+
+    if (nombre && apellido && fecha) {
+      arregloPersonas.push({nombre, apellido, fechaNac: fecha});
+      alert('Persona cargada');
+      // limpiar inputs
+      document.getElementById('nombre').value='';
+      document.getElementById('apellido').value='';
+      document.getElementById('fecha').value='';
+    } else {
+      alert('Complete todos los campos');
+    }
+  }
+
+  function listarPersonas() {
+    let textoHtml = "<h3>Listado de Personas ("+arregloPersonas.length+")</h3>";
+    textoHtml += "<table border='1' cellpadding='5'><tr><th>Nombre</th><th>Apellido</th><th>Fecha Nac</th></tr>";
+    arregloPersonas.forEach(function(item){
+      textoHtml += `<tr><td>${item.nombre}</td><td>${item.apellido}</td><td>${item.fechaNac}</td></tr>`;
+    });
+    textoHtml += "</table>";
+    document.getElementById('presentacion').innerHTML = textoHtml;
+    document.getElementById('presentacion').style.display='block';
+  }
+
+  function togglePresentacion() {
+    const div = document.getElementById('presentacion');
+    div.style.display = (div.style.display==='none' || div.style.display==='') ? 'block' : 'none';
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Alcance de variables</title>
+  <meta charset="UTF-8">
+  <script>
+    // Declaración de variable global sin asignar
+    var variableGlobal;
+
+    // Apenas se carga la página, mostramos los 2 mensajes
+    window.onload = function() {
+      alert("Una variableGlobal fue declarada pero no asignada:\nvar variableGlobal;");
+      alert("El tipo de variableGlobal es: " + typeof variableGlobal);
+    }
+
+    function asignarConDeclaracion() {
+      variableGlobal = prompt("Ingrese valor para la variable global:");
+      alert("Valor asignado con declaración: " + variableGlobal);
+    }
+
+    function asignarSinDeclaracion() {
+      // Si no estuviera declarada, esta asignación la crearía global implícita
+      variableGlobal = prompt("Ingrese valor para la variable global:");
+      alert("Valor asignado sin declaración: " + variableGlobal);
+    }
+
+    function mostrarVariable() {
+      alert("El valor de variableGlobal es: " + variableGlobal +
+            "\nEl tipo de variableGlobal es: " + typeof variableGlobal);
+    }
+  </script>
+</head>
+<body>
+  <h2>Asignaremos valor a la variable global desde adentro de una función:</h2>
+
+  <button onclick="asignarConDeclaracion()">Asignación con declaración (declaración + asignación)</button>
+  <button onclick="asignarSinDeclaracion()">Asignación forzada sin declaración</button>
+  <button onclick="mostrarVariable()">Muestra variable global</button>
+</body>
+</html>

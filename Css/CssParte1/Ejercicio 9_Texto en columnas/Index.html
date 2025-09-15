@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encolumnado sin tablas</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fffde6;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .contenedor {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .columna {
+      background-color: #add8e6;
+      width: 200px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+
+    .columna img {
+      width: 100%;
+      height: auto;
+      margin-top: 10px;
+      display: block;
+    }
+
+    /* Responsive: cambia color y acomoda columnas */
+    @media (max-width: 1000px) {
+      .columna {
+        background-color: #ffdfba;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .columna {
+        background-color: #ffc8dd;
+      }
+    }
+
+    /* Ajuste para que aparezca scroll vertical si no entra todo */
+    html, body {
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Encolumnado sin tablas</h1>
+
+  <div class="contenedor">
+    <!-- Primera fila -->
+    <div class="columna">
+      <p><strong>Artículo 1</strong> - Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna. La siguiente imagen queda marginada automáticamente y ocupa el máximo ancho posible dentro de la columna independientemente del ancho real.</p>
+      <img src="Ciudad.jpeg" alt="Ciudad">
+    </div>
+
+    <div class="columna">
+      <p><strong>Artículo 2</strong> - Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna.</p>
+    </div>
+
+    <div class="columna">
+      <p><strong>Artículo 3</strong> - Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna.</p>
+    </div>
+
+    <!-- Segunda fila -->
+    <div class="columna">
+      <p><strong>Artículo 4</strong> - Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna.</p>
+    </div>
+
+    <div class="columna">
+      <p><strong>Artículo 5</strong> - Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna.</p>
+    </div>
+
+    <!-- Tercera fila -->
+    <div class="columna">
+      <p><strong>Artículo 6</strong> - Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna.</p>
+      <img src="Flores.jpeg" alt="Flores">
+    </div>
+
+    <div class="columna">
+      <p><strong>Artículo 7</strong> - Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna.</p>
+    </div>
+
+    <div class="columna">
+      <p><strong>Artículo 8</strong> - Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna. Datos para incluir en esta columna.</p>
+    </div>
+  </div>
+
+</body>
+</html>

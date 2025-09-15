@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmación de envío y reset</title>
+  <style>
+    body {
+      background-color: lightblue;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    label, input {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="submit"],
+    input[type="reset"] {
+      margin-top: 20px;
+      padding: 5px 10px;
+    }
+
+    .botones {
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Confirmación de envío y de reset</h2>
+
+  <form onsubmit="return confirmarEnvio()">
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" name="nombre">
+
+    <label for="apellido">Apellido</label>
+    <input type="text" id="apellido" name="apellido">
+
+    <div class="botones">
+      <input type="reset" value="Blanquear">
+      <input type="submit" value="Enviar">
+    </div>
+  </form>
+
+  <script>
+    function confirmarEnvio() {
+      return confirm("¿Estás seguro de que deseas enviar el formulario?");
+    }
+  </script>
+
+</body>
+</html>

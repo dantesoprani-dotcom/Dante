@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ejemplo de Padding y Box-sizing</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center; /* Centra los elementos en línea */
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+  }
+
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+  }
+
+  /* Todas las cajas centradas horizontalmente */
+  .caja1, .caja2, .caja3 {
+    width: 50%;
+    margin: 0 auto; /* Centra horizontalmente */
+    text-align: left; /* Para que el texto quede alineado a la izquierda */
+    padding: 20px;
+  }
+
+  .caja1 {
+    background-color: lightblue;
+    padding: 20px;
+  }
+
+  .caja2 {
+    background-color: lightgreen;
+    padding: 20px;
+    min-height: 220px; /* Hacemos la caja más alta */
+  }
+
+  .caja3 {
+    background-color: lightgoldenrodyellow;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  /* Imagen en la esquina inferior derecha */
+  img {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 300px;
+  }
+</style>
+</head>
+<body>
+  <h1>Los siguientes elementos tienen un ancho del 50 % de la ventana</h1>
+
+  <div class="caja1">
+    <p>Texto en interior</p>
+    <p>Texto en interior</p>
+    <p>Texto en interior</p>
+    <p>Texto en interior</p>
+    <p>Texto en interior</p>
+    <p>Texto en interior</p>
+  </div>
+
+  <div class="caja2">
+    <p>Texto en interior con padding y sin box-sizing</p>
+    <p>Texto en interior con padding y sin box-sizing</p>
+    <p>Texto en interior con padding y sin box-sizing</p>
+    <p>Texto en interior con padding y sin box-sizing</p>
+    <p>Texto en interior con padding y sin box-sizing</p>
+  </div>
+
+  <div class="caja3">
+    <p>Texto en interior con padding y con box-sizing</p>
+    <p>Texto en interior con padding y con box-sizing</p>
+    <p>Texto en interior con padding y con box-sizing</p>
+    <p>Texto en interior con padding y con box-sizing</p>
+    <p>Texto en interior con padding y con box-sizing</p>
+    <p>Texto en interior con padding y con box-sizing</p>
+  </div>
+
+  <img src="foto.png" alt="imagen">
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contenedores con fondo</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;   /* Centra horizontal */
+    align-items: center;       /* Centra vertical */
+    height: 100vh;
+    background-color: white;   /* Fondo general blanco */
+  }
+
+  /* Contenedor azul (no ocupa toda la pantalla) */
+  .contenedor-azul {
+    width: 800px;
+    height: 500px;
+    background-color: lightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Contenedor rojo con fondo de frutas */
+  .contenedor-rojo {
+    width: 600px;   /* más chico */
+    height: 350px;  /* más chico */
+    border: 3px solid red;
+    padding: 20px;
+    overflow-y: scroll;
+    box-sizing: border-box;
+
+    /* Fondo frutas */
+    background-image: url("frutas.jpg"); /* 👉 cambia por tu imagen real */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Fondo fijo al hacer scroll */
+  }
+
+  p {
+    font-size: 1.2em;
+    color: black;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+  <div class="contenedor-azul">
+    <div class="contenedor-rojo">
+      <p>El padding es importante para que el texto no quede pegado al borde</p>
+      <p>No olvidar usar el box-sizing:border-box para que la dimensión de la caja sea exactamente la definida en el width</p>
+
+      <!-- Mucho texto para probar scroll -->
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+      <p>Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto. Texto.</p>
+    </div>
+  </div>
+</body>
+</html>

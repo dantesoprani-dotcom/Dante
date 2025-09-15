@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Validación con onKeyUp</title>
+  <style>
+    body {font-family: Arial, sans-serif;}
+    .contenedor {
+      background-color: #c8eaf5;
+      padding: 15px;
+      width: 400px;
+      border: 1px solid #999;
+    }
+    .fila {
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      margin-bottom: 3px;
+    }
+    .botones {
+      display: flex;
+      justify-content: space-between;
+    }
+    input[type="submit"], input[type="reset"] {
+      width: 48%;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<h3>Ejemplo validación de un INPUT de formulario en el evento onKeyUp</h3>
+
+<div class="contenedor">
+  <form id="miform">
+    <div class="fila">
+      <label for="dia">Ingrese el día del mes:</label>
+      <input type="number" id="dia" name="dia" min="1" max="31" required>
+    </div>
+    <div class="fila">
+      <label for="mes">Ingrese el mes:</label>
+      <input type="number" id="mes" name="mes" min="1" max="12" required>
+    </div>
+    <div class="botones">
+      <input type="submit" value="Enviar">
+      <input type="reset" value="Reset">
+    </div>
+  </form>
+</div>
+
+<script>
+  // Al levantar la tecla validar cada input
+  document.getElementById('dia').addEventListener('keyup', function() {
+    if (!this.checkValidity()) {
+      alert('El día introducido no es válido (1-31)');
+    }
+  });
+
+  document.getElementById('mes').addEventListener('keyup', function() {
+    if (!this.checkValidity()) {
+      alert('El mes introducido no es válido (1-12)');
+    }
+  });
+
+  // Para el submit
+  document.getElementById('miform').addEventListener('submit', function(e) {
+    if (!this.checkValidity()) {
+      e.preventDefault(); // bloquea envío
+      alert('Complete correctamente el formulario antes de enviar.');
+    } else {
+      alert('Formulario enviado correctamente');
+    }
+  });
+</script>
+
+</body>
+</html>

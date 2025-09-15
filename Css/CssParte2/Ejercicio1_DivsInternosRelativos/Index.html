@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contenedores Relativos</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: beige;
+    }
+
+    h2 {
+      margin-left: 20px;
+    }
+
+    /* Contenedor relativo clase1 */
+    .contenedorRelativoClase1 {
+      position: relative;
+      margin-left: 10px; /* pegado a la izquierda */
+      margin-top: 10px;
+      width: 80%;
+      height: 50px;
+      background-color: green;
+      color: white;
+      padding: 10px;
+    }
+
+    /* Contenedor relativo clase2 */
+    .contenedorRelativoClase2 {
+      position: relative;
+      margin-left: 80px; /* un poco más a la izquierda */
+      margin-top: 10px;
+      width: 60%;
+      background-color: yellow;
+      padding: 10px;
+    }
+
+    /* Contenedor relativo clase3 con scroll */
+    .contenedorRelativoClase3 {
+      position: relative;
+      margin-left: 80px;
+      margin-top: 10px;
+      width: 50%;
+      height: 120px; /* altura fija */
+      background-color: brown;
+      color: white;
+      padding: 10px;
+      overflow-y: auto; /* scroll vertical */
+    }
+
+    /* Ventana Modal */
+    .paraVentanaModal {
+      position: fixed;
+      width: 50%;
+      height: 50%;
+      top: 20%;
+      left: 25%;
+      background-color: blueviolet;
+      opacity: 0.8;
+      overflow-y: auto;
+      z-index: 10;
+      color: white;
+      padding: 10px;
+    }
+
+    /* Cuadro extra para imagen */
+    .contenedorImagen {
+      margin: 30px auto;
+      width: 350px;   /* más grande */
+      height: 350px;  /* más grande */
+      background-color: lightblue;
+      border: 2px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contenedorImagen img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h2>Contenedores relativos.</h2>
+
+  <div class="contenedorRelativoClase1">Contenedor relativo clase1</div>
+  <div class="contenedorRelativoClase1">Contenedor Relativo clase1</div>
+
+  <div class="contenedorRelativoClase2">
+    La caza furtiva también constituye otro problema grave. Durante mucho tiempo, estos felinos han sido cazados por sus pieles, y en la actualidad, está creciendo el comercio internacional ilegal de dientes de jaguares y productos hechos con hueso de jaguar para enviar a China.
+  </div>
+
+  <div class="contenedorRelativoClase3">
+    Contenedor relativo clase3 <br>
+    El jaguar es el único felino <br>
+    grande de América y el tercero <br>
+     más grande del mundo, después <br>
+     de los tigres y los leones. <br>
+     Son muy parecidos a los leopardos, <br>
+     que viven en África y Asia, <br>
+     pero las manchas de los <br>
+     jaguares son más complejas <br>
+     y suelen tener un punto en el centro. <br>
+
+  </div>
+
+  <div class="contenedorRelativoClase2">
+    A diferencia de muchos otros felinos, los jaguares no rechazan el agua. De hecho, son muy buenos nadadores. Cazan peces, tortugas e incluso caimanes, usando unas fauces increíblemente poderosas para perforar los cráneos de sus presas.  <br>
+  </div>
+
+  <!-- Ventana Modal -->
+  <div class="paraVentanaModal">
+    Contenedor Modal <br>
+    Contenedor Modal <br>
+    Contenedor Modal <br>
+    Contenedor Modal <br>
+    Contenedor Modal <br>
+    Contenedor Modal <br>
+    Contenedor Modal <br>
+    Contenedor Modal
+  </div>
+
+  <!-- Cuadro extra con imagen más grande -->
+  <div class="contenedorImagen">
+    <img src="Jaguar.jpeg" alt="Jaguar">
+  </div>
+
+</body>
+</html>
