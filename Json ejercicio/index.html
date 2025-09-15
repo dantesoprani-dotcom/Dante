@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Datos Logísticos de Clientes</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    img {
+      width: 150px;
+      height: auto;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Datos Logísticos de Clientes</h2>
+
+<table id="tablaClientes">
+  <thead>
+    <tr>
+      <th>Código Cliente</th>
+      <th>Dirección Entrega</th>
+      <th>Provincia (codProv - Descripción)</th>
+      <th>Fecha Entrega</th>
+      <th>Horario Entrega</th>
+      <th>Costo Estimado Transporte</th>
+      <th>Foto Punto de Entrega</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Filas generadas por JavaScript -->
+  </tbody>
+</table>
+
+<script>
+// JSON de clientes con fotos
+var textoJSONClientes = '{"clientes":[' +
+'{"Codcliente":"001","DireccionEntrega":"Plaza San Martín","ProvinciaEntrega":{"codProv":"CBA","Descripcion":"Córdoba"},"FechaEntrega":"2025-10-20","HorarioEntrega":"10:00","CostoEstimadoTransporte":3500,"FotoPuntoEntrega":"cordoba.jpeg"},' +
+'{"Codcliente":"002","DireccionEntrega":"3 de Febrero 2649","ProvinciaEntrega":{"codProv":"SF","Descripcion":"Santa Fe"},"FechaEntrega":"2025-09-22","HorarioEntrega":"14:30","CostoEstimadoTransporte":7300,"FotoPuntoEntrega":"santa fe.jpeg"}' +
+']}';
+
+// Parseamos a objeto JS
+var objClientes = JSON.parse(textoJSONClientes);
+
+// Referencia al <tbody>
+var tbody = document.querySelector("#tablaClientes tbody");
+
+// Recorremos los clientes y armamos las filas
+objClientes.clientes.forEach(function(cli) {
+  var fila = document.createElement("tr");
+  fila.innerHTML = `
+    <td>${cli.Codcliente}</td>
+    <td>${cli.DireccionEntrega}</td>
+    <td>${cli.ProvinciaEntrega.codProv} - ${cli.ProvinciaEntrega.Descripcion}</td>
+    <td>${cli.FechaEntrega}</td>
+    <td>${cli.HorarioEntrega}</td>
+    <td>${cli.CostoEstimadoTransporte}</td>
+    <td><img src="${cli.FotoPuntoEntrega}" alt="Foto punto de entrega"></td>
+  `;
+  tbody.appendChild(fila);
+});
+</script>
+
+</body>
+</html>
