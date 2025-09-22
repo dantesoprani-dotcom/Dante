@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artículos</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #dac8c8;
+        }
+
+        #contenedor {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            min-height: 0; 
+        }
+
+        
+        header {
+            background-color: #ffffe0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        header h1 {
+            margin: 0 auto;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .acciones {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+        }
+
+        .acciones button {
+            background-color: #f3f3f3;
+            border: 1px solid #aaa;
+            padding: 8px 15px;
+            margin-left: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        
+        .encabezado {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            background-color: #ff6f61;
+            text-align: center;
+            font-weight: bold;
+            padding: 8px 0;
+        }
+
+     
+        .contenido {
+            flex: 1;
+            background-color: #d3d3d3;
+            overflow-y: auto;
+            padding: 5px 0;
+        }
+
+        
+        .fila {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            text-align: center;
+            padding: 5px 0;
+        }
+
+        .fila.par {
+            background-color: #db7d7d; 
+            color: black;
+        }
+
+        .fila.impar {
+            background-color: #adadad; 
+            color: black;
+        }
+
+        
+        .pie {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            background-color: #ff6f61;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding: 6px 0;
+        }
+
+        footer {
+             background-color: #ffffe0;
+            text-align: center;
+            padding: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+    </style>
+
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="contenedor">
+        
+        <header>
+            <h1>Artículos</h1>
+            <div class="acciones">
+                <button id="btCargar">Cargar datos</button>
+                <button id="btVaciar">Vaciar datos</button>
+            </div>
+        </header>
+
+     
+        <div class="encabezado">
+            <div>CodArt</div>
+            <div>Familia</div>
+            <div>UM</div>
+            <div>Descripción</div>
+            <div>Fecha Alta</div>
+            <div>Saldo Stock</div>
+        </div>
+
+        <div class="contenido" id="areaDatos">
+            
+        </div>
+
+      
+        <div class="pie" id="pieTotales">
+            <div>sum codArt</div>
+            <div>sum familia</div>
+            <div>sum um</div>
+            <div>sum descripcion</div>
+            <div>sum fecha alta</div>
+            <div id="totalSaldo">sum saldo stock</div>
+        </div>
+
+        
+        <footer>
+            Pie
+        </footer>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const datos = [
+                { codArt: "ALM03", familia: "FRSEC", um: "KG", descripcion: "Almendras Peladas Orig. Tailandia", fecha: "2020-06-15", saldo: 400 },
+                { codArt: "ATU00", familia: "CONPE", um: "LT", descripcion: "Atun al agua Orig Ecuador", fecha: "2020-02-01", saldo: 1800 },
+                { codArt: "ATU01", familia: "CONPE", um: "LT", descripcion: "Atun en aceite Orig. Ecuador", fecha: "2020-06-15", saldo: 301 },
+                { codArt: "CHA00", familia: "CONVE", um: "LT", descripcion: "Champiñon en aceite", fecha: "2020-06-15", saldo: 201 },
+                { codArt: "CHO01", familia: "CONVE", um: "LT", descripcion: "Choclo Orig. Ecuador", fecha: "2020-02-02", saldo: 86 },
+                { codArt: "PER00", familia: "CONFR", um: "LT", descripcion: "Peras en almibar Mendoza", fecha: "2020-06-24", saldo: 555 },
+                { codArt: "PIM00", familia: "ESPEC", um: "KG", descripcion: "Pimienta blanca en grano", fecha: "2020-02-02", saldo: 275 },
+                { codArt: "PIM01", familia: "ESPEC", um: "KG", descripcion: "Pimienta negra en grano", fecha: "2020-02-02", saldo: 275 },
+                { codArt: "PIM03", familia: "ESPEC", um: "KG", descripcion: "Pimienta blanca molida", fecha: "2020-02-02", saldo: 275 },
+                { codArt: "CAC00", familia: "FRSEC", um: "KG", descripcion: "Cacahuetes tostados", fecha: "2020-01-15", saldo: 320 },
+                { codArt: "MAN00", familia: "FRSEC", um: "KG", descripcion: "Maní natural", fecha: "2020-03-22", saldo: 180 },
+                { codArt: "MAN01", familia: "FRSEC", um: "KG", descripcion: "Maní salado", fecha: "2020-03-22", saldo: 210 },
+                { codArt: "ACE00", familia: "ACEIT", um: "LT", descripcion: "Aceite de oliva", fecha: "2020-02-10", saldo: 150 },
+                { codArt: "ACE01", familia: "ACEIT", um: "LT", descripcion: "Aceite de girasol", fecha: "2020-02-12", saldo: 200 },
+                { codArt: "MAY00", familia: "COND", um: "LT", descripcion: "Mayonesa", fecha: "2020-04-01", saldo: 90 },
+                { codArt: "KET00", familia: "COND", um: "LT", descripcion: "Ketchup", fecha: "2020-04-01", saldo: 110 },
+                { codArt: "SAL00", familia: "COND", um: "KG", descripcion: "Sal fina", fecha: "2020-02-05", saldo: 500 },
+                { codArt: "SAL01", familia: "COND", um: "KG", descripcion: "Sal gruesa", fecha: "2020-02-05", saldo: 400 },
+                { codArt: "AZU00", familia: "COND", um: "KG", descripcion: "Azúcar blanca", fecha: "2020-02-15", saldo: 600 },
+                { codArt: "ALM00", familia: "FRSEC", um: "KG", descripcion: "Almendras Peladas Orig Marruecos", fecha: "2020-06-15", saldo: 233 },
+                { codArt: "ALM03", familia: "FRSEC", um: "KG", descripcion: "Almendras Peladas Orig. Tailandia", fecha: "2020-06-15", saldo: 400 },
+                { codArt: "ATU00", familia: "CONPE", um: "LT", descripcion: "Atun al agua Orig Ecuador", fecha: "2020-02-01", saldo: 1800 },
+                { codArt: "ATU01", familia: "CONPE", um: "LT", descripcion: "Atun en aceite Orig. Ecuador", fecha: "2020-06-15", saldo: 301 },
+                { codArt: "CHA00", familia: "CONVE", um: "LT", descripcion: "Champiñon en aceite", fecha: "2020-06-15", saldo: 201 },
+                { codArt: "CHO01", familia: "CONVE", um: "LT", descripcion: "Choclo Orig. Ecuador", fecha: "2020-02-02", saldo: 86 },
+                { codArt: "PER00", familia: "CONFR", um: "LT", descripcion: "Peras en almibar Mendoza", fecha: "2020-06-24", saldo: 555 },
+                { codArt: "PIM00", familia: "ESPEC", um: "KG", descripcion: "Pimienta blanca en grano", fecha: "2020-02-02", saldo: 275 },
+                { codArt: "PIM01", familia: "ESPEC", um: "KG", descripcion: "Pimienta negra en grano", fecha: "2020-02-02", saldo: 275 },
+                { codArt: "PIM03", familia: "ESPEC", um: "KG", descripcion: "Pimienta blanca molida", fecha: "2020-02-02", saldo: 275 },
+                { codArt: "CAC00", familia: "FRSEC", um: "KG", descripcion: "Cacahuetes tostados", fecha: "2020-01-15", saldo: 320 },
+                { codArt: "MAN00", familia: "FRSEC", um: "KG", descripcion: "Maní natural", fecha: "2020-03-22", saldo: 180 },
+                { codArt: "MAN01", familia: "FRSEC", um: "KG", descripcion: "Maní salado", fecha: "2020-03-22", saldo: 210 },
+                { codArt: "ACE00", familia: "ACEIT", um: "LT", descripcion: "Aceite de oliva", fecha: "2020-02-10", saldo: 150 },
+                { codArt: "ACE01", familia: "ACEIT", um: "LT", descripcion: "Aceite de girasol", fecha: "2020-02-12", saldo: 200 },
+                { codArt: "MAY00", familia: "COND", um: "LT", descripcion: "Mayonesa", fecha: "2020-04-01", saldo: 90 },
+                { codArt: "KET00", familia: "COND", um: "LT", descripcion: "Ketchup", fecha: "2020-04-01", saldo: 110 },
+                { codArt: "SAL00", familia: "COND", um: "KG", descripcion: "Sal fina", fecha: "2020-02-05", saldo: 500 },
+                { codArt: "SAL01", familia: "COND", um: "KG", descripcion: "Sal gruesa", fecha: "2020-02-05", saldo: 400 },
+                { codArt: "AZU00", familia: "COND", um: "KG", descripcion: "Azúcar blanca", fecha: "2020-02-15", saldo: 600 },
+                { codArt: "ALM00", familia: "FRSEC", um: "KG", descripcion: "Almendras Peladas Orig Marruecos", fecha: "2020-06-15", saldo: 233 },
+                { codArt: "ALM03", familia: "FRSEC", um: "KG", descripcion: "Almendras Peladas Orig. Tailandia", fecha: "2020-06-15", saldo: 400 },
+                { codArt: "ATU00", familia: "CONPE", um: "LT", descripcion: "Atun al agua Orig Ecuador", fecha: "2020-02-01", saldo: 1800 },
+                { codArt: "ATU01", familia: "CONPE", um: "LT", descripcion: "Atun en aceite Orig. Ecuador", fecha: "2020-06-15", saldo: 301 },
+                { codArt: "CHA00", familia: "CONVE", um: "LT", descripcion: "Champiñon en aceite", fecha: "2020-06-15", saldo: 201 },
+
+            ];
+
+            function actualizarTotales() {
+                let totalSaldo = datos.reduce((sum, item) => sum + item.saldo, 0);
+                $("#totalSaldo").text(totalSaldo);
+            }
+
+            
+            $("#btCargar").click(function () {
+                $("#areaDatos").empty();
+
+                datos.forEach((item, index) => {
+                    $("#areaDatos").append(
+                        `<div class="fila ${index % 2 === 0 ? 'par' : 'impar'}">
+                            <div>${item.codArt}</div>
+                            <div>${item.familia}</div>
+                            <div>${item.um}</div>
+                            <div>${item.descripcion}</div>
+                            <div>${item.fecha}</div>
+                            <div>${item.saldo}</div>
+                        </div>`
+                    );
+                });
+
+                actualizarTotales();
+            });
+
+            
+            $("#btVaciar").click(function () {
+                $("#areaDatos").empty();
+                $("#totalSaldo").text("sum saldo stock");
+            });
+        });
+    </script>
+</body>
+</html>
