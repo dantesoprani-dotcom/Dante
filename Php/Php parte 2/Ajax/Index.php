@@ -47,7 +47,7 @@ if (isset($_POST['clave'])) {
 
   <div class="boton" id="encriptarBtn">
     Encriptar
-    <img id="Flecha.jpeg" src="Flecha.jpeg" alt="→">
+    <img id="flecha.jpeg" src="Flecha.jpeg" alt="→">
   </div>
 
   <div class="resultado" id="resultado">
