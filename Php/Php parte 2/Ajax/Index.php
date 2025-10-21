@@ -1,7 +1,7 @@
 <?php
 if (isset($_POST['clave'])) {
 
-    // Simula demora del servidor
+  
     sleep(3);
 
     $clave = $_POST['clave'];
@@ -47,7 +47,7 @@ if (isset($_POST['clave'])) {
 
   <div class="boton" id="encriptarBtn">
     Encriptar
-    <img id="flecha" src="flecha.png" alt="→">
+    <img id="flecha" src="flecha.jpeg" alt="→">
   </div>
 
   <div class="resultado" id="resultado">
@@ -69,11 +69,11 @@ boton.addEventListener('click', () => {
   const clave = document.getElementById('clave').value.trim();
   if (!clave) { alert("Ingrese una clave"); return; }
 
-  // Muestra y anima la flecha
+  
   flecha.style.display = "block";
   flecha.classList.add('mover');
 
-  // Limpia y muestra mensajes de espera
+  
   resultado.innerHTML = "<h3>Resultado:</h3> Esperando respuesta...";
   estado.innerHTML = "Estado del requerimiento: <span>ESPERANDO RESPUESTA</span>";
 
