@@ -81,3 +81,16 @@ btn.addEventListener('click', () => {
 <?php
 }
 ?>
+
+<?php
+sleep(3); // simula retardo del servidor
+
+// Armamos el objeto con los datos recibidos
+$objRegistro = new stdClass();
+$objRegistro->codigoUsuario = $_POST['codigoUsuario'] ?? '';
+$objRegistro->apellidoUsuario = $_POST['apellidoUsuario'] ?? '';
+$objRegistro->nombreUsuario = $_POST['nombreUsuario'] ?? '';
+
+// Convertimos a JSON
+echo json_encode($objRegistro, JSON_UNESCAPED_UNICODE);
+?>
