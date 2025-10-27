@@ -152,7 +152,7 @@
 
         var objClientes = JSON.parse(textoJSONClientes);
 
-        // Referencias
+        
         const selCod = document.getElementById("Codcliente");
         const direccion = document.getElementById("DireccionEntrega");
         const provincia = document.getElementById("ProvinciaEntrega");
@@ -161,7 +161,6 @@
         const costo = document.getElementById("CostoEstimadoTransporte");
         const fotoContainer = document.getElementById("fotoContainer");
 
-        // Cargar clientes al select
         objClientes.clientes.forEach(cli => {
             const opt = document.createElement("option");
             opt.value = cli.Codcliente;
@@ -169,7 +168,6 @@
             selCod.appendChild(opt);
         });
 
-        // Mostrar datos del cliente seleccionado
         function mostrarDatos(cod) {
             const c = objClientes.clientes.find(x => x.Codcliente === cod);
             if (c) {
@@ -189,7 +187,7 @@
             }
         });
 
-        // Cambiar cliente
+        
         selCod.addEventListener("change", () => mostrarDatos(selCod.value));
 
         

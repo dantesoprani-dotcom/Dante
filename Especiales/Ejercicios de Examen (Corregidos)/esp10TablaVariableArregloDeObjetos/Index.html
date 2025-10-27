@@ -151,7 +151,7 @@
   </footer>
 
   <script>
-    // --- JSON de datos logísticos de clientes ---
+    //JSON de datos logísticos de clientes 
     var textoJSONClientes = '{"clientes":[' +
       '{"Codcliente":"001","DireccionEntrega":"Plaza San Martín","ProvinciaEntrega":{"codProv":"CBA","Descripcion":"Córdoba"},"FechaEntrega":"2025-10-20","HorarioEntrega":"10:00","CostoEstimadoTransporte":3500},' +
       '{"Codcliente":"002","DireccionEntrega":"3 de Febrero 2649","ProvinciaEntrega":{"codProv":"SF","Descripcion":"Santa Fe"},"FechaEntrega":"2025-09-22","HorarioEntrega":"14:30","CostoEstimadoTransporte":7300},' +
@@ -167,12 +167,12 @@
 
     var objClientes = JSON.parse(textoJSONClientes);
 
-    // --- Referencias DOM ---
+   
     const btnCargar = document.getElementById("cargar");
     const btnVaciar = document.getElementById("vaciar");
     const tbody = document.getElementById("datos");
 
-    // --- Función para mostrar los datos ---
+    
     function mostrarClientes() {
       tbody.innerHTML = "";
       objClientes.clientes.forEach(c => {
@@ -189,12 +189,12 @@
       });
     }
 
-    // --- Función para vaciar los datos ---
+  
     function vaciarClientes() {
       tbody.innerHTML = "";
     }
 
-    // --- Eventos de botones ---
+ 
     btnCargar.addEventListener("click", mostrarClientes);
     btnVaciar.addEventListener("click", vaciarClientes);
   </script>

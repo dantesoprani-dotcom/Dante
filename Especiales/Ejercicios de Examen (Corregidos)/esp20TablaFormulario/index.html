@@ -43,7 +43,6 @@
     tr:nth-child(even) { background-color: #f0f6ff; }
     tfoot th { background-color: orange; color: #000; padding: 12px; font-weight: bold; position: sticky; bottom: 0; z-index: 4; }
 
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -65,14 +64,12 @@
     }
     .close { float: right; font-size: 22px; font-weight: bold; color: red; cursor: pointer; }
 
-    /* bloquea fondo cuando modal abierto */
     body.modal-open {
       overflow: hidden;
       pointer-events: none;
     }
     body.modal-open #modalForm { pointer-events: auto; }
 
-    /* --- Estilos del formulario --- */
     #formulario header, #formulario footer { background-color: rgb(0, 4, 255); color: white; text-align: center; padding: 10px; }
     #formulario main { background-color: silver; padding: 10px; margin-top: 10px; }
     #formulario form { width: 100%; overflow: hidden; }
@@ -129,11 +126,9 @@
 
   <footer>Hecho por Dante Soprani.</footer>
 
-  <!-- MODAL -->
   <div id="modalForm" class="modal" aria-hidden="true" role="dialog">
     <div class="modal-content" role="document" aria-modal="true">
       <span class="close" id="cerrarModal" title="Cerrar">&times;</span>
-      <!-- Formulario integrado -->
       <div id="formulario">
         <header>
           <h1>Formulario para Alta</h1>
@@ -178,7 +173,6 @@
   </div>
 
   <script>
-    // === JSON con los 10 clientes (001–010), fotos restauradas para 001 y 002 ===
     var textoJSONClientes = '{"clientes":[' +
       '{"Codcliente":"001","DireccionEntrega":"Plaza San Martín","ProvinciaEntrega":{"codProv":"CBA","Descripcion":"Córdoba"},"FechaEntrega":"2025-10-20","HorarioEntrega":"10:00","CostoEstimadoTransporte":3500,"FotoPuntoEntrega":"Cordoba.jpeg"},' +
       '{"Codcliente":"002","DireccionEntrega":"3 de Febrero 2649","ProvinciaEntrega":{"codProv":"SF","Descripcion":"Santa Fe"},"FechaEntrega":"2025-09-22","HorarioEntrega":"14:30","CostoEstimadoTransporte":7300,"FotoPuntoEntrega":"SantaFe.jpeg"},' +
@@ -194,7 +188,6 @@
 
     var objClientes = JSON.parse(textoJSONClientes);
 
-    // === TABLA ===
     const btnCargar = document.getElementById("cargar");
     const btnVaciar = document.getElementById("vaciar");
     const tbody = document.getElementById("datos");
@@ -217,7 +210,6 @@
     btnCargar.addEventListener("click", mostrarClientes);
     btnVaciar.addEventListener("click", vaciarClientes);
 
-    // === MODAL ===
     const modal = document.getElementById("modalForm");
     const btnAbrir = document.getElementById("abrirForm");
     const btnCerrar = document.getElementById("cerrarModal");
@@ -226,7 +218,6 @@
       modal.style.display = "flex";
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add("modal-open");
-      // foco inicial en select
       setTimeout(() => {
         const first = document.querySelector("#modalForm #Codcliente");
         if (first) first.focus();
@@ -237,17 +228,15 @@
       cerrarModalAccion();
     });
 
-    // función para cerrar modal (reutilizable)
     function cerrarModalAccion() {
       modal.style.display = "none";
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove("modal-open");
-      // foco de vuelta al botón Cargar datos (o al header)
       const focusTarget = document.getElementById("cargar");
       if (focusTarget) { focusTarget.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
     }
 
-    // === FORMULARIO ===
+
     const selCod = document.getElementById("Codcliente");
     const direccion = document.getElementById("DireccionEntrega");
     const provincia = document.getElementById("ProvinciaEntrega");
@@ -256,7 +245,7 @@
     const costo = document.getElementById("CostoEstimadoTransporte");
     const fotoContainer = document.getElementById("fotoContainer");
 
-    // poblar select con todos los clientes
+   
     function poblarSelectClientes() {
       selCod.innerHTML = "";
       objClientes.clientes.forEach(cli => {
@@ -298,18 +287,14 @@
       }
     });
 
-    // Al enviar: cerrar modal y volver a la vista principal
     document.getElementById("formClientes").addEventListener("submit", (e) => {
       e.preventDefault();
-      // Aquí podrías procesar/validar y guardar datos si hace falta
       alert("Formulario enviado correctamente.");
       cerrarModalAccion();
     });
 
-    // accesibilidad: cerrar con Escape
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && modal.style.display === "flex") {
-        // solo cerramos si el usuario presiona Escape — opcional
         cerrarModalAccion();
       }
     });
