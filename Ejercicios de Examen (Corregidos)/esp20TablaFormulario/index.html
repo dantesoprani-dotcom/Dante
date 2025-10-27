@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Datos Logísticos de Clientes</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Arial, sans-serif; }
+    body { background-color: #f2f4f8; color: #333; }
+    header, footer {
+      position: fixed; left: 0; width: 100%;
+      background-color: #0056b3; color: white; z-index: 10;
+    }
+    header {
+      top: 0; height: 70px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    footer {
+      bottom: 0; height: 50px; text-align: center; line-height: 50px;
+      font-weight: 600; box-shadow: 0 -2px 6px rgba(0,0,0,0.3);
+    }
+    .table-container {
+      position: absolute; top: 70px; bottom: 50px; left: 0; right: 0;
+      overflow-y: auto; padding: 20px;
+    }
+    .botones { display: flex; gap: 10px; }
+    button {
+      background-color: white; border: 2px solid #0056b3; color: #0056b3;
+      padding: 8px 14px; border-radius: 6px; font-weight: bold;
+      cursor: pointer; transition: all 0.2s ease-in-out;
+    }
+    button:hover { background-color: #0056b3; color: white; }
+    table {
+      width: 100%; border-collapse: collapse; background-color: white;
+      border-radius: 10px; overflow: hidden; box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+    th {
+      background-color: #0077cc; color: white; padding: 12px; text-align: left;
+      position: sticky; top: 0; z-index: 5;
+    }
+    td { padding: 10px; border-bottom: 1px solid #ddd; }
+    tr:nth-child(even) { background-color: #f0f6ff; }
+    tfoot th { background-color: orange; color: #000; padding: 12px; font-weight: bold; position: sticky; bottom: 0; z-index: 4; }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.75);
+      justify-content: center; align-items: center;
+      backdrop-filter: blur(3px);
+    }
+    .modal-content {
+      background-color: #fff; width: 90%; max-width: 900px; border-radius: 10px;
+      padding: 20px; overflow-y: auto; max-height: 90%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      animation: aparecer 0.22s ease-in-out;
+    }
+    @keyframes aparecer {
+      from { transform: scale(0.98); opacity: 0; } to { transform: scale(1); opacity: 1; }
+    }
+    .close { float: right; font-size: 22px; font-weight: bold; color: red; cursor: pointer; }
+
+    /* bloquea fondo cuando modal abierto */
+    body.modal-open {
+      overflow: hidden;
+      pointer-events: none;
+    }
+    body.modal-open #modalForm { pointer-events: auto; }
+
+    /* --- Estilos del formulario --- */
+    #formulario header, #formulario footer { background-color: rgb(0, 4, 255); color: white; text-align: center; padding: 10px; }
+    #formulario main { background-color: silver; padding: 10px; margin-top: 10px; }
+    #formulario form { width: 100%; overflow: hidden; }
+    #formulario label { display: block; margin-left: 15px; margin-bottom: 8px; }
+    #formulario input, #formulario select {
+      display: block; width: 320px; height: 50px; margin-left: 15px; margin-bottom: 18px;
+      padding: 0.4em 0.5em; font-size: 1rem;
+    }
+    #formulario .form-box { width: 45%; float: left; padding: 10px; margin: 0.5%; }
+    #formulario .botones { clear: both; width: 100%; text-align: center; padding: 10px; margin-top: 20px; }
+    #formulario button {
+      padding: 10px 20px; margin: 10px; font-size: 1rem; width: 33%;
+      border-radius: 8px; border: none; background-color: rgb(0, 4, 255);
+      color: white; cursor: pointer;
+    }
+    #fotoContainer img { max-width: 400px; border-radius: 10px; margin-bottom: 8px; display:block; margin-left: auto; margin-right: auto; }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Datos Logísticos de Clientes</h2>
+    <div class="botones">
+      <button id="cargar">Cargar datos</button>
+      <button id="vaciar">Vaciar datos</button>
+      <button id="abrirForm">Cargar form</button>
+    </div>
+  </header>
+
+  <div class="table-container">
+    <table id="tablaClientes">
+      <thead>
+        <tr>
+          <th>Código de Cliente</th>
+          <th>Dirección de Entrega</th>
+          <th>Provincia</th>
+          <th>Fecha de Entrega</th>
+          <th>Horario</th>
+          <th>Costo Estimado</th>
+        </tr>
+      </thead>
+      <tbody id="datos"></tbody>
+      <tfoot>
+        <tr>
+          <th>Sum Cod_cliente</th>
+          <th>Sum Dirección de Entrega</th>
+          <th>Sum Provincia</th>
+          <th>Sum Fecha de Entrega</th>
+          <th>Sum Horario</th>
+          <th>Sum Costo Estimado</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <footer>Hecho por Dante Soprani.</footer>
+
+  <!-- MODAL -->
+  <div id="modalForm" class="modal" aria-hidden="true" role="dialog">
+    <div class="modal-content" role="document" aria-modal="true">
+      <span class="close" id="cerrarModal" title="Cerrar">&times;</span>
+      <!-- Formulario integrado -->
+      <div id="formulario">
+        <header>
+          <h1>Formulario para Alta</h1>
+          <h2>Datos logísticos del cliente</h2>
+        </header>
+
+        <main>
+          <form id="formClientes">
+            <div class="form-box">
+              <label for="Codcliente">Código de cliente:</label>
+              <select id="Codcliente" required></select>
+
+              <label for="DireccionEntrega">Dirección de entrega:</label>
+              <input type="text" id="DireccionEntrega" readonly>
+
+              <label for="ProvinciaEntrega">Provincia de entrega:</label>
+              <input type="text" id="ProvinciaEntrega" readonly>
+            </div>
+
+            <div class="form-box">
+              <label for="FechaEntrega">Fecha de entrega:</label>
+              <input type="date" id="FechaEntrega" readonly>
+
+              <label for="HorarioEntrega">Horario de entrega:</label>
+              <input type="time" id="HorarioEntrega" readonly>
+
+              <label for="CostoEstimadoTransporte">Costo estimado transporte:</label>
+              <input type="number" id="CostoEstimadoTransporte" readonly>
+            </div>
+
+            <div class="botones">
+              <button type="button" id="mostrarFoto">Mostrar foto del punto de entrega</button>
+              <button type="submit">Enviar</button>
+              <div id="fotoContainer"></div>
+            </div>
+          </form>
+        </main>
+
+        <footer><h2>Hecho por Dante Soprani.</h2></footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // === JSON con los 10 clientes (001–010), fotos restauradas para 001 y 002 ===
+    var textoJSONClientes = '{"clientes":[' +
+      '{"Codcliente":"001","DireccionEntrega":"Plaza San Martín","ProvinciaEntrega":{"codProv":"CBA","Descripcion":"Córdoba"},"FechaEntrega":"2025-10-20","HorarioEntrega":"10:00","CostoEstimadoTransporte":3500,"FotoPuntoEntrega":"Cordoba.jpeg"},' +
+      '{"Codcliente":"002","DireccionEntrega":"3 de Febrero 2649","ProvinciaEntrega":{"codProv":"SF","Descripcion":"Santa Fe"},"FechaEntrega":"2025-09-22","HorarioEntrega":"14:30","CostoEstimadoTransporte":7300,"FotoPuntoEntrega":"SantaFe.jpeg"},' +
+      '{"Codcliente":"003","DireccionEntrega":"Av. 9 de Julio 1234","ProvinciaEntrega":{"codProv":"BSAS","Descripcion":"Buenos Aires"},"FechaEntrega":"2025-11-05","HorarioEntrega":"09:00","CostoEstimadoTransporte":4200},' +
+      '{"Codcliente":"004","DireccionEntrega":"Calle Mendoza 567","ProvinciaEntrega":{"codProv":"MZA","Descripcion":"Mendoza"},"FechaEntrega":"2025-12-01","HorarioEntrega":"16:45","CostoEstimadoTransporte":5800},' +
+      '{"Codcliente":"005","DireccionEntrega":"Ruta Nacional 9 Km 120","ProvinciaEntrega":{"codProv":"TUC","Descripcion":"Tucumán"},"FechaEntrega":"2025-10-30","HorarioEntrega":"11:15","CostoEstimadoTransporte":6900},' +
+      '{"Codcliente":"006","DireccionEntrega":"Av. Italia 899","ProvinciaEntrega":{"codProv":"ER","Descripcion":"Entre Ríos"},"FechaEntrega":"2025-11-12","HorarioEntrega":"13:00","CostoEstimadoTransporte":5200},' +
+      '{"Codcliente":"007","DireccionEntrega":"Calle San Juan 44","ProvinciaEntrega":{"codProv":"SJ","Descripcion":"San Juan"},"FechaEntrega":"2025-11-18","HorarioEntrega":"15:30","CostoEstimadoTransporte":6100},' +
+      '{"Codcliente":"008","DireccionEntrega":"Av. Las Heras 222","ProvinciaEntrega":{"codProv":"CHA","Descripcion":"Chaco"},"FechaEntrega":"2025-11-25","HorarioEntrega":"08:45","CostoEstimadoTransporte":4900},' +
+      '{"Codcliente":"009","DireccionEntrega":"Ruta 40 km 270","ProvinciaEntrega":{"codProv":"RN","Descripcion":"Río Negro"},"FechaEntrega":"2025-12-10","HorarioEntrega":"17:20","CostoEstimadoTransporte":8000},' +
+      '{"Codcliente":"010","DireccionEntrega":"Boulevard Oroño 999","ProvinciaEntrega":{"codProv":"SF","Descripcion":"Santa Fe"},"FechaEntrega":"2025-12-22","HorarioEntrega":"10:30","CostoEstimadoTransporte":7500}' +
+    ']}';
+
+    var objClientes = JSON.parse(textoJSONClientes);
+
+    // === TABLA ===
+    const btnCargar = document.getElementById("cargar");
+    const btnVaciar = document.getElementById("vaciar");
+    const tbody = document.getElementById("datos");
+
+    function mostrarClientes() {
+      tbody.innerHTML = "";
+      objClientes.clientes.forEach(c => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${c.Codcliente}</td>
+          <td>${c.DireccionEntrega}</td>
+          <td>${c.ProvinciaEntrega.Descripcion} (${c.ProvinciaEntrega.codProv})</td>
+          <td>${c.FechaEntrega}</td>
+          <td>${c.HorarioEntrega}</td>
+          <td>$${c.CostoEstimadoTransporte.toLocaleString()}</td>`;
+        tbody.appendChild(fila);
+      });
+    }
+    function vaciarClientes() { tbody.innerHTML = ""; }
+    btnCargar.addEventListener("click", mostrarClientes);
+    btnVaciar.addEventListener("click", vaciarClientes);
+
+    // === MODAL ===
+    const modal = document.getElementById("modalForm");
+    const btnAbrir = document.getElementById("abrirForm");
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    btnAbrir.addEventListener("click", () => {
+      modal.style.display = "flex";
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add("modal-open");
+      // foco inicial en select
+      setTimeout(() => {
+        const first = document.querySelector("#modalForm #Codcliente");
+        if (first) first.focus();
+      }, 80);
+    });
+
+    btnCerrar.addEventListener("click", () => {
+      cerrarModalAccion();
+    });
+
+    // función para cerrar modal (reutilizable)
+    function cerrarModalAccion() {
+      modal.style.display = "none";
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove("modal-open");
+      // foco de vuelta al botón Cargar datos (o al header)
+      const focusTarget = document.getElementById("cargar");
+      if (focusTarget) { focusTarget.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    }
+
+    // === FORMULARIO ===
+    const selCod = document.getElementById("Codcliente");
+    const direccion = document.getElementById("DireccionEntrega");
+    const provincia = document.getElementById("ProvinciaEntrega");
+    const fecha = document.getElementById("FechaEntrega");
+    const horario = document.getElementById("HorarioEntrega");
+    const costo = document.getElementById("CostoEstimadoTransporte");
+    const fotoContainer = document.getElementById("fotoContainer");
+
+    // poblar select con todos los clientes
+    function poblarSelectClientes() {
+      selCod.innerHTML = "";
+      objClientes.clientes.forEach(cli => {
+        const opt = document.createElement("option");
+        opt.value = cli.Codcliente;
+        opt.textContent = `Cliente ${cli.Codcliente}`;
+        selCod.appendChild(opt);
+      });
+    }
+    poblarSelectClientes();
+
+    function mostrarDatos(cod) {
+      const c = objClientes.clientes.find(x => x.Codcliente === cod);
+      if (c) {
+        direccion.value = c.DireccionEntrega || "";
+        provincia.value = (c.ProvinciaEntrega && c.ProvinciaEntrega.Descripcion) || "";
+        fecha.value = c.FechaEntrega || "";
+        horario.value = c.HorarioEntrega || "";
+        costo.value = c.CostoEstimadoTransporte || "";
+        fotoContainer.innerHTML = "";
+      }
+    }
+
+    selCod.addEventListener("change", () => mostrarDatos(selCod.value));
+
+    window.addEventListener("DOMContentLoaded", () => {
+      if (objClientes.clientes.length > 0) {
+        selCod.value = objClientes.clientes[0].Codcliente;
+        mostrarDatos(selCod.value);
+      }
+    });
+
+    document.getElementById("mostrarFoto").addEventListener("click", () => {
+      const c = objClientes.clientes.find(x => x.Codcliente === selCod.value);
+      if (c && c.FotoPuntoEntrega) {
+        fotoContainer.innerHTML = `<img src="${c.FotoPuntoEntrega}" alt="Foto del punto de entrega">`;
+      } else {
+        fotoContainer.innerHTML = "<p>Este cliente no tiene foto registrada.</p>";
+      }
+    });
+
+    // Al enviar: cerrar modal y volver a la vista principal
+    document.getElementById("formClientes").addEventListener("submit", (e) => {
+      e.preventDefault();
+      // Aquí podrías procesar/validar y guardar datos si hace falta
+      alert("Formulario enviado correctamente.");
+      cerrarModalAccion();
+    });
+
+    // accesibilidad: cerrar con Escape
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.style.display === "flex") {
+        // solo cerramos si el usuario presiona Escape — opcional
+        cerrarModalAccion();
+      }
+    });
+  </script>
+</body>
+</html>
