@@ -1,0 +1,8 @@
+//clientes.js
+var textoJSONClientes = '{"clientes":[' +
+'{"Codcliente":"001","DireccionEntrega":"Plaza San Martín","ProvinciaEntrega":{"codProv":"CBA","Descripcion":"Córdoba"},"FechaEntrega":"2025-10-20","HorarioEntrega":"10:00","CostoEstimadoTransporte":3500,"FotoPuntoEntrega":"Cordoba.jpeg"},' +
+'{"Codcliente":"002","DireccionEntrega":"3 de Febrero 2649","ProvinciaEntrega":{"codProv":"SF","Descripcion":"Santa Fe"},"FechaEntrega":"2025-09-22","HorarioEntrega":"14:30","CostoEstimadoTransporte":7300,"FotoPuntoEntrega":"SantaFe.jpeg"}' +
+']}';
+
+// Parseo a objeto JavaScript
+var objClientes = JSON.parse(textoJSONClientes);
