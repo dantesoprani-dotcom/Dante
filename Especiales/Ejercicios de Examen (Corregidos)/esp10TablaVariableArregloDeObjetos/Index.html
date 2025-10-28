@@ -78,36 +78,29 @@
       overflow: hidden;
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
     }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
     th {
       background-color: #0077cc;
       color: white;
-      padding: 12px;
-      text-align: left;
       position: sticky;
       top: 0;
       z-index: 5;
     }
-    td {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
     tr:nth-child(even) {
       background-color: #f0f6ff;
     }
-    tfoot th {
+    tfoot td {
       background-color: orange;
       color: #000;
-      padding: 12px;
       font-weight: bold;
       position: sticky;
       bottom: 0;
       z-index: 4;
-    }
-    @media (max-width: 768px) {
-      td:nth-child(4), th:nth-child(4),
-      td:nth-child(5), th:nth-child(5) {
-        display: none;
-      }
+      text-align: left;
     }
   </style>
 </head>
@@ -121,13 +114,14 @@
   </header>
 
   <div class="table-container">
-    <table id="tablaClientes">
+    <table id="tablaProvincias">
       <thead>
         <tr>
-          <th>Código de Cliente</th>
+          <th>Código de Provincia</th>
+          <th>Descripción</th>
+          <th>Código Cliente</th>
           <th>Dirección de Entrega</th>
-          <th>Provincia</th>
-          <th>Fecha de Entrega</th>
+          <th>Fecha</th>
           <th>Horario</th>
           <th>Costo Estimado</th>
         </tr>
@@ -135,12 +129,13 @@
       <tbody id="datos"></tbody>
       <tfoot>
         <tr>
-          <th>Sum Cod_cliente</th>
-          <th>Sum Dirección de Entrega</th>
-          <th>Sum Provincia</th>
-          <th>Sum Fecha de Entrega</th>
-          <th>Sum Horario</th>
-          <th>Sum Costo Estimado</th>
+          <td>Sum Código de Provincia</td>
+          <td>Sum Descripción</td>
+          <td>Sum Código Cliente</td>
+          <td>Sum Dirección de Entrega</td>
+          <td>Sum Fecha</td>
+          <td>Sum Horario</td>
+          <td>Sum Costo Estimado</td>
         </tr>
       </tfoot>
     </table>
@@ -151,52 +146,49 @@
   </footer>
 
   <script>
-    //JSON de datos logísticos de clientes 
-    var textoJSONClientes = '{"clientes":[' +
-      '{"Codcliente":"001","DireccionEntrega":"Plaza San Martín","ProvinciaEntrega":{"codProv":"CBA","Descripcion":"Córdoba"},"FechaEntrega":"2025-10-20","HorarioEntrega":"10:00","CostoEstimadoTransporte":3500},' +
-      '{"Codcliente":"002","DireccionEntrega":"3 de Febrero 2649","ProvinciaEntrega":{"codProv":"SF","Descripcion":"Santa Fe"},"FechaEntrega":"2025-09-22","HorarioEntrega":"14:30","CostoEstimadoTransporte":7300},' +
-      '{"Codcliente":"003","DireccionEntrega":"Av. 9 de Julio 1234","ProvinciaEntrega":{"codProv":"BSAS","Descripcion":"Buenos Aires"},"FechaEntrega":"2025-11-05","HorarioEntrega":"09:00","CostoEstimadoTransporte":4200},' +
-      '{"Codcliente":"004","DireccionEntrega":"Calle Mendoza 567","ProvinciaEntrega":{"codProv":"MZA","Descripcion":"Mendoza"},"FechaEntrega":"2025-12-01","HorarioEntrega":"16:45","CostoEstimadoTransporte":5800},' +
-      '{"Codcliente":"005","DireccionEntrega":"Ruta Nacional 9 Km 120","ProvinciaEntrega":{"codProv":"TUC","Descripcion":"Tucumán"},"FechaEntrega":"2025-10-30","HorarioEntrega":"11:15","CostoEstimadoTransporte":6900},' +
-      '{"Codcliente":"006","DireccionEntrega":"Av. Italia 899","ProvinciaEntrega":{"codProv":"ER","Descripcion":"Entre Ríos"},"FechaEntrega":"2025-11-12","HorarioEntrega":"13:00","CostoEstimadoTransporte":5200},' +
-      '{"Codcliente":"007","DireccionEntrega":"Calle San Juan 44","ProvinciaEntrega":{"codProv":"SJ","Descripcion":"San Juan"},"FechaEntrega":"2025-11-18","HorarioEntrega":"15:30","CostoEstimadoTransporte":6100},' +
-      '{"Codcliente":"008","DireccionEntrega":"Av. Las Heras 222","ProvinciaEntrega":{"codProv":"CHA","Descripcion":"Chaco"},"FechaEntrega":"2025-11-25","HorarioEntrega":"08:45","CostoEstimadoTransporte":4900},' +
-      '{"Codcliente":"009","DireccionEntrega":"Ruta 40 km 270","ProvinciaEntrega":{"codProv":"RN","Descripcion":"Río Negro"},"FechaEntrega":"2025-12-10","HorarioEntrega":"17:20","CostoEstimadoTransporte":8000},' +
-      '{"Codcliente":"010","DireccionEntrega":"Boulevard Oroño 999","ProvinciaEntrega":{"codProv":"SF","Descripcion":"Santa Fe"},"FechaEntrega":"2025-12-22","HorarioEntrega":"10:30","CostoEstimadoTransporte":7500}' +
+    var textoJSONProvincias = '{"provincias":[' +
+      '{"codProv":"CBA","Descripcion":"Córdoba","Codcliente":"001","DireccionEntrega":"Plaza San Martín","FechaEntrega":"2025-10-20","HorarioEntrega":"10:00","CostoEstimadoTransporte":3500},' +
+      '{"codProv":"SF","Descripcion":"Santa Fe","Codcliente":"002","DireccionEntrega":"3 de Febrero 2649","FechaEntrega":"2025-09-22","HorarioEntrega":"14:30","CostoEstimadoTransporte":7300},' +
+      '{"codProv":"BSAS","Descripcion":"Buenos Aires","Codcliente":"003","DireccionEntrega":"Av. 9 de Julio 1234","FechaEntrega":"2025-11-05","HorarioEntrega":"09:00","CostoEstimadoTransporte":4200},' +
+      '{"codProv":"MZA","Descripcion":"Mendoza","Codcliente":"004","DireccionEntrega":"Calle Mendoza 567","FechaEntrega":"2025-12-01","HorarioEntrega":"16:45","CostoEstimadoTransporte":5800},' +
+      '{"codProv":"TUC","Descripcion":"Tucumán","Codcliente":"005","DireccionEntrega":"Ruta Nacional 9 Km 120","FechaEntrega":"2025-10-30","HorarioEntrega":"11:15","CostoEstimadoTransporte":6900},' +
+      '{"codProv":"ER","Descripcion":"Entre Ríos","Codcliente":"006","DireccionEntrega":"Av. Italia 899","FechaEntrega":"2025-11-12","HorarioEntrega":"13:00","CostoEstimadoTransporte":5200},' +
+      '{"codProv":"SJ","Descripcion":"San Juan","Codcliente":"007","DireccionEntrega":"Calle San Juan 44","FechaEntrega":"2025-11-18","HorarioEntrega":"15:30","CostoEstimadoTransporte":6100},' +
+      '{"codProv":"CHA","Descripcion":"Chaco","Codcliente":"008","DireccionEntrega":"Av. Las Heras 222","FechaEntrega":"2025-11-25","HorarioEntrega":"08:45","CostoEstimadoTransporte":4900},' +
+      '{"codProv":"RN","Descripcion":"Río Negro","Codcliente":"009","DireccionEntrega":"Ruta 40 km 270","FechaEntrega":"2025-12-10","HorarioEntrega":"17:20","CostoEstimadoTransporte":8000},' +
+      '{"codProv":"LP","Descripcion":"La Pampa","Codcliente":"010","DireccionEntrega":"Av. San Martín 500","FechaEntrega":"2025-12-22","HorarioEntrega":"10:30","CostoEstimadoTransporte":7500}' +
     ']}';
 
-    var objClientes = JSON.parse(textoJSONClientes);
+    var objProvincias = JSON.parse(textoJSONProvincias);
 
-   
     const btnCargar = document.getElementById("cargar");
     const btnVaciar = document.getElementById("vaciar");
     const tbody = document.getElementById("datos");
 
-    
-    function mostrarClientes() {
+    function mostrarProvincias() {
       tbody.innerHTML = "";
-      objClientes.clientes.forEach(c => {
+
+      objProvincias.provincias.forEach(p => {
         const fila = document.createElement("tr");
         fila.innerHTML = `
-          <td>${c.Codcliente}</td>
-          <td>${c.DireccionEntrega}</td>
-          <td>${c.ProvinciaEntrega.Descripcion} (${c.ProvinciaEntrega.codProv})</td>
-          <td>${c.FechaEntrega}</td>
-          <td>${c.HorarioEntrega}</td>
-          <td>$${c.CostoEstimadoTransporte.toLocaleString()}</td>
+          <td>${p.codProv}</td>
+          <td>${p.Descripcion}</td>
+          <td>${p.Codcliente}</td>
+          <td>${p.DireccionEntrega}</td>
+          <td>${p.FechaEntrega}</td>
+          <td>${p.HorarioEntrega}</td>
+          <td>$${p.CostoEstimadoTransporte.toLocaleString()}</td>
         `;
         tbody.appendChild(fila);
       });
     }
 
-  
-    function vaciarClientes() {
+    function vaciarTabla() {
       tbody.innerHTML = "";
     }
 
- 
-    btnCargar.addEventListener("click", mostrarClientes);
-    btnVaciar.addEventListener("click", vaciarClientes);
+    btnCargar.addEventListener("click", mostrarProvincias);
+    btnVaciar.addEventListener("click", vaciarTabla);
   </script>
 </body>
 </html>

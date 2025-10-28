@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario - Datos Logísticos</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; font-size: 16px; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
     header, footer {
       background-color: rgb(0, 4, 255);
       color: white;
@@ -18,6 +24,9 @@
     header { top: 0; height: 12%; }
     footer { bottom: 0; height: 10%; }
 
+    h1 { font-size: 1.5em; }
+    h2 { font-size: 1.1em; }
+
     main {
       overflow-y: auto;
       height: 78%;
@@ -27,9 +36,13 @@
       position: fixed;
       top: 12%;
     }
-
     form { width: 100%; overflow: hidden; }
-    label { display: block; margin-left: 15px; margin-bottom: 8px; }
+
+    label {
+      display: block;
+      margin-left: 15px;
+      margin-bottom: 8px;
+    }
     input, select {
       display: block;
       width: 320px;
@@ -39,7 +52,12 @@
       padding: 0.4em 0.5em;
       font-size: 1rem;
     }
-    .form-box { width: 45%; float: left; padding: 10px; margin: 0.5%; }
+    .form-box {
+      width: 45%;
+      float: left;
+      padding: 10px;
+      margin: 0.5%;
+    }
 
     .botones {
       clear: both;
@@ -48,7 +66,6 @@
       padding: 10px;
       margin-top: 20px;
     }
-
     button {
       padding: 10px 20px;
       margin: 10px;
@@ -60,10 +77,22 @@
       color: white;
       cursor: pointer;
     }
-
-    #fotoContainer { margin-top: 20px; text-align: center; }
-    #fotoContainer img { max-width: 400px; border-radius: 10px; margin-bottom: 8px; }
-    #fotoNombre { font-weight: bold; font-size: 1.1em; }
+    button:hover {
+      background-color: rgb(0, 4, 255);
+    }
+    #fotoContainer {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #fotoContainer img {
+      max-width: 400px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    #fotoNombre {
+      font-weight: bold;
+      font-size: 1.1em;
+    }
 
     @media (max-width: 795px) {
       .form-box { width: 98%; }
@@ -80,14 +109,14 @@
   <main>
     <form id="formClientes">
       <div class="form-box">
+        <label for="ProvinciaEntrega">Provincia de entrega:</label>
+        <select id="ProvinciaEntrega" required></select>
+
         <label for="Codcliente">Código de cliente:</label>
-        <select id="Codcliente" required></select>
+        <input type="text" id="Codcliente" readonly>
 
         <label for="DireccionEntrega">Dirección de entrega:</label>
         <input type="text" id="DireccionEntrega" readonly>
-
-        <label for="ProvinciaEntrega">Provincia de entrega:</label>
-        <input type="text" id="ProvinciaEntrega" readonly>
       </div>
 
       <div class="form-box">
@@ -114,55 +143,55 @@
   </footer>
 
   <script>
-    var textoJSONClientes = '{"clientes":[' +
-      '{"Codcliente":"001","DireccionEntrega":"Plaza San Martín","ProvinciaEntrega":{"codProv":"CBA","Descripcion":"Córdoba"},"FechaEntrega":"2025-10-20","HorarioEntrega":"10:00","CostoEstimadoTransporte":3500,"FotoPuntoEntrega":"Cordoba.jpeg"},' +
-      '{"Codcliente":"002","DireccionEntrega":"3 de Febrero 2649","ProvinciaEntrega":{"codProv":"SF","Descripcion":"Santa Fe"},"FechaEntrega":"2025-09-22","HorarioEntrega":"14:30","CostoEstimadoTransporte":7300,"FotoPuntoEntrega":"SantaFe.jpeg"}' +
+    var textoJSONProvincias = '{"provincias":[' +
+      '{"codProv":"CBA","Descripcion":"Córdoba","Codcliente":"001","DireccionEntrega":"Plaza San Martín","FechaEntrega":"2025-10-20","HorarioEntrega":"10:00","CostoEstimadoTransporte":3500,"FotoPuntoEntrega":"Cordoba.jpeg"},' +
+      '{"codProv":"SF","Descripcion":"Santa Fe","Codcliente":"002","DireccionEntrega":"3 de Febrero 2649","FechaEntrega":"2025-09-22","HorarioEntrega":"14:30","CostoEstimadoTransporte":7300,"FotoPuntoEntrega":"SantaFe.jpeg"}' +
     ']}';
 
-    var objClientes = JSON.parse(textoJSONClientes);
+    var objProvincias = JSON.parse(textoJSONProvincias);
 
-    const selCod = document.getElementById("Codcliente");
+    const selProv = document.getElementById("ProvinciaEntrega");
+    const cod = document.getElementById("Codcliente");
     const direccion = document.getElementById("DireccionEntrega");
-    const provincia = document.getElementById("ProvinciaEntrega");
     const fecha = document.getElementById("FechaEntrega");
     const horario = document.getElementById("HorarioEntrega");
     const costo = document.getElementById("CostoEstimadoTransporte");
     const fotoContainer = document.getElementById("fotoContainer");
 
-    objClientes.clientes.forEach(cli => {
+    // Cargar opciones de provincia
+    objProvincias.provincias.forEach(p => {
       const opt = document.createElement("option");
-      opt.value = cli.Codcliente;
-      opt.textContent = `Cliente ${cli.Codcliente}`;
-      selCod.appendChild(opt);
+      opt.value = p.codProv;
+      opt.textContent = p.Descripcion;
+      selProv.appendChild(opt);
     });
 
-    function mostrarDatos(cod) {
-      const c = objClientes.clientes.find(x => x.Codcliente === cod);
-      if (c) {
-        direccion.value = c.DireccionEntrega;
-        provincia.value = c.ProvinciaEntrega.Descripcion;
-        fecha.value = c.FechaEntrega;
-        horario.value = c.HorarioEntrega;
-        costo.value = c.CostoEstimadoTransporte;
+    function mostrarDatos(codProv) {
+      const p = objProvincias.provincias.find(x => x.codProv === codProv);
+      if (p) {
+        cod.value = p.Codcliente;
+        direccion.value = p.DireccionEntrega;
+        fecha.value = p.FechaEntrega;
+        horario.value = p.HorarioEntrega;
+        costo.value = p.CostoEstimadoTransporte;
         fotoContainer.innerHTML = "";
       }
     }
-
     window.addEventListener("DOMContentLoaded", () => {
-      if (objClientes.clientes.length > 0) {
-        selCod.value = objClientes.clientes[0].Codcliente;
-        mostrarDatos(selCod.value);
+      if (objProvincias.provincias.length > 0) {
+        selProv.value = objProvincias.provincias[0].codProv;
+        mostrarDatos(selProv.value);
       }
     });
 
-    selCod.addEventListener("change", () => mostrarDatos(selCod.value));
+    selProv.addEventListener("change", () => mostrarDatos(selProv.value));
 
     document.getElementById("mostrarFoto").addEventListener("click", () => {
-      const c = objClientes.clientes.find(x => x.Codcliente === selCod.value);
-      if (c) {
-        fotoContainer.innerHTML = `<img src="${c.FotoPuntoEntrega}" alt="Foto del punto de entrega">`;
+      const p = objProvincias.provincias.find(x => x.codProv === selProv.value);
+      if (p) {
+        fotoContainer.innerHTML = `<img src="${p.FotoPuntoEntrega}" alt="Foto del punto de entrega">`;
       } else {
-        fotoContainer.innerHTML = "<p>Seleccione un cliente primero.</p>";
+        fotoContainer.innerHTML = "<p>Seleccione una provincia primero.</p>";
       }
     });
 
