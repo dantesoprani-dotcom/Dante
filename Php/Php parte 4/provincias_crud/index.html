@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>ABM Provincias — Ejercicio (adaptado)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family: Arial, sans-serif; margin:20px; background:#f5f7fb; color:#222;}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+    h1{font-size:20px;}
+    .btn{padding:8px 12px;border-radius:6px;border:none;cursor:pointer;}
+    .btn-primary{background:#0b74de;color:#fff;}
+    .btn-danger{background:#e04b4b;color:#fff;}
+    .container{background:#fff;padding:16px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+    table{width:100%;border-collapse:collapse;margin-top:12px;}
+    th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;}
+    th{background:#fafafa;}
+    .actions button{margin-right:6px;}
+    /* modal */
+    .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);visibility:hidden;opacity:0;transition:all .18s;}
+    .modal.active{visibility:visible;opacity:1;}
+    .modal-content{background:#fff;padding:16px;border-radius:8px;width:90%;max-width:720px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+    .form-row{display:flex;gap:8px;margin-bottom:8px;}
+    .form-row input, .form-row select{flex:1;padding:8px;border:1px solid #ddd;border-radius:6px;}
+    label{font-size:13px;}
+    .footer{display:flex;justify-content:flex-end;gap:8px;margin-top:12px;}
+    #contenidoModalRespuesta{max-height:300px;overflow:auto;}
+    iframe{border:0;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gestión de Provincias</h1>
+    <div>
+      <button id="btNueva" class="btn btn-primary">Nueva Provincia</button>
+      <button id="btRecargar" class="btn">Recargar</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="contenedorTablaProvincias">
+      <table id="tbDatos">
+        <thead>
+          <tr>
+            <th>Cod</th><th>Nombre</th><th>Región</th><th>Fecha Alta</th><th>Población</th><th>Documento</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal Form (Alta/Modi) -->
+  <div id="ventanaModalFormulario" class="modal">
+    <div class="modal-content">
+      <h3 id="tituloModal">Nueva Provincia</h3>
+      <form id="formProvincias" method="post" enctype="multipart/form-data">
+        <div class="form-row">
+          <div>
+            <label>CodProv</label><br/>
+            <input id="formEntCodProv" name="codProv" required />
+          </div>
+          <div>
+            <label>Nombre</label><br/>
+            <input id="formEntNombre" name="nombreProv" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <input id="formEntRegion" name="region" placeholder="Región" />
+          <input id="formEntFechaAlta" name="fechaAlta" type="date" />
+          <input id="formEntPoblacion" name="poblacion" type="number" min="0" />
+        </div>
+        <div>
+          <label>Documento Pdf (opcional)</label><br/>
+          <input type="file" id="formEntDocumentoPdf" name="documentoPdf" accept="application/pdf" />
+        </div>
+
+        <div class="footer">
+          <button type="button" id="btCerrar" class="btn">Cerrar</button>
+          <button type="submit" id="btEnvioForm" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Respuesta / Binario -->
+  <div id="ventanaModalRespuesta" class="modal">
+    <div class="modal-content">
+      <h3>Respuesta</h3>
+      <div id="contenidoModalRespuesta"></div>
+      <div class="footer">
+        <button id="btCerrarResp" class="btn">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+let modo = 'alta'; // 'alta' o 'modi'
+document.addEventListener('DOMContentLoaded', function() {
+  const tbBody = document.getElementById('tbBody');
+  const modal = document.getElementById('ventanaModalFormulario');
+  const modalResp = document.getElementById('ventanaModalRespuesta');
+  const form = document.getElementById('formProvincias');
+
+  function openModalAlta() {
+    modo='alta';
+    document.getElementById('tituloModal').innerText='Nueva Provincia';
+    document.getElementById('formEntCodProv').readOnly = false;
+    form.reset();
+    modal.classList.add('active');
+  }
+  function openModalModi(obj) {
+    modo='modi';
+    document.getElementById('tituloModal').innerText='Modificar Provincia';
+    document.getElementById('formEntCodProv').value = obj.codProv;
+    document.getElementById('formEntCodProv').readOnly = true;
+    document.getElementById('formEntNombre').value = obj.nombreProv;
+    document.getElementById('formEntRegion').value = obj.region || '';
+    document.getElementById('formEntFechaAlta').value = obj.fechaAlta || '';
+    document.getElementById('formEntPoblacion').value = obj.poblacion || 0;
+    modal.classList.add('active');
+  }
+
+  document.getElementById('btNueva').addEventListener('click', openModalAlta);
+  document.getElementById('btRecargar').addEventListener('click', cargarTabla);
+  document.getElementById('btCerrar').addEventListener('click', ()=> modal.classList.remove('active'));
+  document.getElementById('btCerrarResp').addEventListener('click', ()=> modalResp.classList.remove('active'));
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if (modo==='alta') enviarAlta();
+    else enviarModi();
+  });
+
+  function cargarTabla() {
+    fetch('./lista.php', {method:'get'})
+    .then(r=>r.json())
+    .then(datos=>{
+      tbBody.innerHTML='';
+      datos.provincias.forEach(function(p){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${p.codProv}</td>
+                        <td>${p.nombreProv}</td>
+                        <td>${p.region||''}</td>
+                        <td>${p.fechaAlta||''}</td>
+                        <td>${p.poblacion||0}</td>
+                        <td>${p.hasDocumento? '📄' : ''}</td>
+                        <td class="actions">
+                          <button class="btn" data-cod="${p.codProv}" data-action="ver">Ver</button>
+                          <button class="btn" data-cod="${p.codProv}" data-action="modi">Modi</button>
+                          <button class="btn btn-danger" data-cod="${p.codProv}" data-action="baja">Baja</button>
+                        </td>`;
+        tbBody.appendChild(tr);
+      });
+    })
+    .catch(err=> alert('Error al cargar tabla: '+err));
+  }
+
+  // Delegation for action buttons
+  tbBody.addEventListener('click', function(e){
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    const cod = btn.getAttribute('data-cod');
+    const action = btn.getAttribute('data-action');
+    if(action==='ver') { traeDocumento(cod); }
+    if(action==='modi') { buscaYAbreModi(cod); }
+    if(action==='baja') { baja(cod); }
+  });
+
+  function enviarAlta(){
+    const fd = new FormData(form);
+    fetch('./alta.php', {method:'post', body:fd})
+    .then(r=>r.text())
+    .then(txt=>{
+      alert(txt);
+      modal.classList.remove('active');
+      cargarTabla();
+    }).catch(err=>alert('Error alta: '+err));
+  }
+
+  function enviarModi(){
+    const fd = new FormData(form);
+    fetch('./modi.php', {method:'post', body:fd})
+    .then(r=>r.text())
+    .then(txt=>{
+      alert(txt);
+      modal.classList.remove('active');
+      cargarTabla();
+    }).catch(err=>alert('Error modi: '+err));
+  }
+
+  function baja(cod){
+    if(!confirm('Confirma baja de ' + cod)) return;
+    const data = new URLSearchParams();
+    data.append('codProv', cod);
+    fetch('./baja.php', {method:'post', body:data})
+    .then(r=>r.text())
+    .then(txt=>{
+      alert(txt);
+      cargarTabla();
+    });
+  }
+
+  function buscaYAbreModi(cod){
+    // pedir datos de la fila al server (o usar los ya cargados)
+    fetch('./lista.php', {method:'get'})
+    .then(r=>r.json())
+    .then(datos=>{
+      const encontrado = datos.provincias.find(p=>p.codProv===cod);
+      if(encontrado) openModalModi(encontrado);
+      else alert('No encontrado');
+    });
+  }
+
+  function traeDocumento(cod){
+    const data = new URLSearchParams();
+    data.append('codProv', cod);
+    fetch('./traeBinario.php', {method:'post', body:data})
+    .then(r=>r.text())
+    .then(texto=>{
+      try {
+        const obj = JSON.parse(texto);
+        const html = "<iframe width='100%' height='600px' src='data:application/pdf;base64,"+obj.documentoPdf+"'></iframe>";
+        document.getElementById('contenidoModalRespuesta').innerHTML = html;
+        modalResp.classList.add('active');
+      } catch(e){
+        alert('Error al parsear binario: '+e + "\nRespuesta: "+texto);
+      }
+    });
+  }
+
+  // initial load
+  cargarTabla();
+});
+</script>
+</body>
+</html>
