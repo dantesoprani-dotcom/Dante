@@ -2,7 +2,6 @@
 session_start();
 
 if (!isset($_SESSION['idSesion'])) {
-
     $usuario = $_POST['usuario'] ?? '';
     $clave = $_POST['clave'] ?? '';
 
@@ -19,50 +18,41 @@ if (!isset($_SESSION['idSesion'])) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bienvenido</title>
-  <style>
-    body {
-      background: #f1f5f9;
-      font-family: "Segoe UI", sans-serif;
-      text-align: center;
-      padding-top: 60px;
-    }
-    h1 { color: #0077b6; }
-    .box {
-      background: #fff;
-      display: inline-block;
-      padding: 25px 40px;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-      margin-top: 20px;
-    }
-    button {
-      padding: 10px 18px;
-      margin: 10px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 15px;
-      color: #fff;
-    }
-    .btn-continue { background-color: #00b4d8; }
-    .btn-exit { background-color: #ef476f; }
-    button:hover { opacity: 0.85; }
-  </style>
+<meta charset="UTF-8">
+<title>Ingreso a la aplicación</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  h2 { color: #000; }
+  .info {
+    border: 1px solid #000;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  button {
+    margin-right: 10px;
+    padding: 5px 10px;
+  }
+</style>
 </head>
 <body>
-  <h1>¡Bienvenido, <?php echo $_SESSION['usuario']; ?>!</h1>
-  <div class="box">
-    <p><strong>ID de Sesión:</strong> <?php echo $_SESSION['idSesion']; ?></p>
-    <p><strong>Contador de sesión:</strong> <?php echo $_SESSION['contador']; ?></p>
 
-    <button class="btn-continue" onclick="location.href='index.php'">Ir a la aplicación</button>
-    <button class="btn-exit" onclick="location.href='destruir_sesion.php'">Cerrar sesión</button>
-  </div>
+<h3>Ingreso a la aplicación</h3>
+
+<div class="info">
+  <h2>Información de Sesión</h2>
+  <p><strong>Identificativo de sesión:</strong> <?php echo $_SESSION['idSesion']; ?></p>
+  <p><strong>Login de usuario:</strong> <?php echo $_SESSION['usuario']; ?></p>
+  <p><strong>Contador de sesión:</strong> <?php echo $_SESSION['contador']; ?></p>
+</div>
+
+<form>
+  <button type="button" onclick="location.href='index.php'">Ingrese al módulo 1 de la app</button>
+  <button type="button" onclick="location.href='destruir_sesion.php'">Terminar sesión</button>
+</form>
+
 </body>
 </html>
