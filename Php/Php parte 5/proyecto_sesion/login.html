@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso al Sistema</title>
+  <style>
+    * { box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+    body {
+      background: linear-gradient(135deg, #0077b6, #00b4d8);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      width: 320px;
+      text-align: center;
+    }
+    h2 { color: #023e8a; margin-bottom: 20px; }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      background: #0077b6;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover { background: #023e8a; }
+    small { color: #555; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Iniciar Sesión</h2>
+    <form action="ingreso.php" method="post">
+      <input type="text" name="usuario" placeholder="Usuario" required>
+      <input type="password" name="clave" placeholder="Contraseña" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <small>Versión nueva del sistema de sesión</small>
+  </div>
+</body>
+</html>
