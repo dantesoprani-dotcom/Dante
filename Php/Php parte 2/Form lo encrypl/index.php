@@ -3,7 +3,7 @@ if (isset($_POST['clave'])) {
     $clave = $_POST['clave'];
 
     $md5 = md5($clave);
-    $sha1 = sha1($clave);
+    $sha1 = password_hash($clave, PASSWORD_DEFAULT);
 
     echo "<h2>CLAVE: $clave</h2>";
     echo "<p>Clave encriptada con md5: $md5</p>";

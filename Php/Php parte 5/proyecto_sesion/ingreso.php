@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include("../db.php");
 if (!isset($_SESSION['idSesion'])) {
     $usuario = $_POST['usuario'] ?? '';
     $clave = $_POST['clave'] ?? '';
@@ -8,12 +8,29 @@ if (!isset($_SESSION['idSesion'])) {
     $usuario_valido = 'admin';
     $clave_valida = 'clave987';
 
-    if ($usuario === $usuario_valido && $clave === $clave_valida) {
-        $_SESSION['idSesion'] = session_create_id();
-        $_SESSION['usuario'] = "Dante Soprani";
-        $_SESSION['contador'] = ($_SESSION['contador'] ?? 0) + 1;
-    } else {
-        header("Location: login.html");
+    try {
+        $stmt = $dbh->prepare("SELECT id, nombre, clave, contador FROM Usuarios WHERE usuario = :usuario");
+        $stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($clave, $user['clave'])) {
+            $_SESSION['idSesion']  = session_create_id();
+            $_SESSION['usuario']   = $user['nombre'];
+            $_SESSION['idUsuario'] = $user['id'];
+            $_SESSION['contador']  = $user['contador'] + 1; // lo mantenés también en $_SESSION
+
+            // 🔹 Aumentar contador en la base de datos (solo al iniciar sesión)
+            $upd = $dbh->prepare("UPDATE Usuarios SET contador = contador + 1 WHERE id = :id");
+            $upd->bindParam(':id', $user['id'], PDO::PARAM_INT);
+            $upd->execute();
+
+        } else {
+            header("Location: login.html");
+            exit();
+        }
+    } catch (PDOException $e) {
+        error_log("Error de autenticación: " . $e->getMessage());
         exit();
     }
 }
@@ -50,7 +67,7 @@ if (!isset($_SESSION['idSesion'])) {
 </div>
 
 <form>
-  <button type="button" onclick="location.href='index.php'">Ingrese al módulo 1 de la app</button>
+  <button type="button" onclick="location.href='../../Php4/provincias_crud/index.php'">Ingrese al módulo 1 de la app</button>
   <button type="button" onclick="location.href='destruir_sesion.php'">Terminar sesión</button>
 </form>
 
