@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['idSesion'])) {
-        header("Location: login.html");
+        header("Location: ../../Php parte 5/proyecto_sesion/login.html");
         exit();
 }
 ?>
