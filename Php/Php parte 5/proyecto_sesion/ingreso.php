@@ -16,9 +16,8 @@ if (!isset($_SESSION['idSesion'])) {
             $_SESSION['usuario']   = $user['Nombre'];
             $_SESSION['contador']  = $user['Contador'] + 1; // lo mantenés también en $_SESSION
 
-            // 🔹 Aumentar contador en la base de datos (solo al iniciar sesión)
-            $upd = $dbh->prepare("UPDATE Usuarios SET Contador = Contador + 1 WHERE Nombre= :usuario");
-            $stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
+            $upd = $dbh->prepare("UPDATE Usuarios SET Contador = Contador + 1 WHERE Nombre = :usuario");
+            $upd->bindParam(':usuario', $usuario, PDO::PARAM_STR);
             $upd->execute();
 
         } else {
