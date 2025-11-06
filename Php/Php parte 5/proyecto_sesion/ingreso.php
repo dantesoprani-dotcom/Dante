@@ -1,12 +1,13 @@
 <?php
 session_start();
-include("../db.php");
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include("../db.php"); // asegúrate de que defina $dbh
+
 if (!isset($_SESSION['idSesion'])) {
     $usuario = $_POST['usuario'] ?? '';
     $clave = $_POST['clave'] ?? '';
-
-    $usuario_valido = 'admin';
-    $clave_valida = 'clave987';
 
     try {
         $stmt = $dbh->prepare("SELECT id, nombre, clave, contador FROM Usuarios WHERE usuario = :usuario");
@@ -14,23 +15,24 @@ if (!isset($_SESSION['idSesion'])) {
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // Verificamos si el usuario existe y la contraseña es correcta
         if ($user && password_verify($clave, $user['clave'])) {
             $_SESSION['idSesion']  = session_create_id();
             $_SESSION['usuario']   = $user['nombre'];
             $_SESSION['idUsuario'] = $user['id'];
-            $_SESSION['contador']  = $user['contador'] + 1; // lo mantenés también en $_SESSION
+            $_SESSION['contador']  = $user['contador'] + 1;
 
-            // 🔹 Aumentar contador en la base de datos (solo al iniciar sesión)
+            // Aumentar contador solo al iniciar sesión
             $upd = $dbh->prepare("UPDATE Usuarios SET contador = contador + 1 WHERE id = :id");
             $upd->bindParam(':id', $user['id'], PDO::PARAM_INT);
             $upd->execute();
-
         } else {
+            // Si no coincide, redirige
             header("Location: login.html");
             exit();
         }
     } catch (PDOException $e) {
-        error_log("Error de autenticación: " . $e->getMessage());
+        echo "Error: " . $e->getMessage(); // temporalmente visible
         exit();
     }
 }
