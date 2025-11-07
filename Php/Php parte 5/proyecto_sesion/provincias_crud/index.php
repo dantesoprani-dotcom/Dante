@@ -299,9 +299,6 @@ fetch('./lista.php', {
         mostrarProvincias();
       };
     }
-
-    // Mostrar datos guardados al cargar
-    mostrarProvincias();
   </script>
 </body>
 </html>
