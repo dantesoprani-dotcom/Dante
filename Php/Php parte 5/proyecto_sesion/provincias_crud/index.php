@@ -192,14 +192,14 @@ if (!isset($_SESSION['idSesion'])) {
       tbody.innerHTML = "";
       tbody.innerHTML = "Esperando respuesta del servidor...";
       let objDatosFiltros = new URLSearchParams();
-objDatosFiltros.append('codCliente', document.getElementById('codCliente').value);
-objDatosFiltros.append('direccion', document.getElementById('direccion').value);
-objDatosFiltros.append('provincia', document.getElementById('provincia').value);
-objDatosFiltros.append('fecha', document.getElementById('fecha').value);
-objDatosFiltros.append('hora', document.getElementById('hora').value);
-objDatosFiltros.append('costo', document.getElementById('costo').value);
-objDatosFiltros.append('orden', document.getElementById('orden').value); // campo select u ordenamiento
-
+      objDatosFiltros.append('codCliente', document.getElementById('codCliente').value);
+      objDatosFiltros.append('direccion', document.getElementById('direccion').value);
+      objDatosFiltros.append('provincia', document.getElementById('provincia').value);
+      objDatosFiltros.append('fecha', document.getElementById('fecha').value);
+      objDatosFiltros.append('hora', document.getElementById('hora').value);
+      objDatosFiltros.append('costo', document.getElementById('costo').value);
+      objDatosFiltros.append('orden', document.getElementById('orden').value); // campo select u ordenamiento
+      alert("Datos enviados al servidor:\n\n" + objDatosFiltros.toString());
 // 🔹 Llamada AJAX con fetch
 fetch('./lista.php', {
     method: 'POST',
@@ -216,13 +216,15 @@ fetch('./lista.php', {
     return response.json(); // Parseamos el JSON recibido
 })
 .then(datos => {
-    // datos.clientes → array con los clientes
-    // datos.cuenta → cantidad total
+    let jsonClientes = datos;
+
+    // 🔸 ALERT: mostrar lo que llega desde PHP
+    alert("Respuesta JSON recibida:\n\n" + JSON.stringify(jsonClientes, null, 2));
 
     tbody.innerHTML = '';
 
     // 🔹 Recorremos el array de clientes recibido
-    datos.clientes.forEach(cliente => {
+   jsonClientes.clientes.forEach(cliente => {
         const fila = document.createElement('tr');
 
         // Creamos las celdas (td) con los datos
