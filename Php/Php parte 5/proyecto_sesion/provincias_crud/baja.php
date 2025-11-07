@@ -1,14 +1,19 @@
 <?php
-// baja.php - elimina la provincia por codProv
-require_once 'db.php';
-$codProv = isset($_POST['codProv']) ? trim($_POST['codProv']) : '';
+session_start();
+if (!isset($_SESSION['idSesion'])) {
+  header("Location: index.php");
+  exit();
+}
+require_once '../../db.php';
+$codCliente  = isset($_POST['codCliente']) ? trim($_POST['codCliente']) : '';
 $respuesta_estado = "Baja: ";
 try {
-    $sql = "DELETE FROM provincias WHERE codProv = :codProv;";
+  sleep(3);
+    $sql = "DELETE FROM `Logísticos_Clientes` WHERE Codcliente = :codCliente;";
     $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':codProv', $codProv);
+    $stmt->bindParam(':codCliente', $codCliente);
     $stmt->execute();
-    $respuesta_estado .= "se elimino codProv: " . $codProv;
+    $respuesta_estado .= "se elimino codCliente: " . $codCliente;
 } catch (PDOException $e) {
     $respuesta_estado .= "Error en baja: " . $e->getMessage();
 }

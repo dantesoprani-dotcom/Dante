@@ -105,6 +105,7 @@ if (!isset($_SESSION['idSesion'])) {
         </tr>
       </thead>
       <tbody id="datos"></tbody>
+      <tfoot id="totalRegistros">Hecho por Dante Soprani</tfoot>
     </table>
   </div>
 
@@ -189,32 +190,61 @@ if (!isset($_SESSION['idSesion'])) {
     // === MOSTRAR DATOS EN TABLA ===
     function mostrarProvincias() {
       tbody.innerHTML = "";
-      objProvincias.provincias.forEach((p, index) => {
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-          <td>${p.codProv}</td>
-          <td>${p.Descripcion}</td>
-          <td>${p.Codcliente}</td>
-          <td class="ocultar-columna">${p.DireccionEntrega}</td>
-          <td>${p.FechaEntrega}</td>
-          <td>${p.HorarioEntrega}</td>
-          <td>$${p.CostoEstimadoTransporte.toLocaleString()}</td>
-          <td><button class="pdfBtn">PDF</button></td>
-          <td><button class="modiBtn">Modif.</button></td>
-          <td><button class="bajaBtn">Borrar</button></td>`;
-        tbody.appendChild(fila);
+      tbody.innerHTML = "Esperando respuesta del servidor...";
+      let objDatosFiltros = new URLSearchParams();
+objDatosFiltros.append('codCliente', document.getElementById('codCliente').value);
+objDatosFiltros.append('direccion', document.getElementById('direccion').value);
+objDatosFiltros.append('provincia', document.getElementById('provincia').value);
+objDatosFiltros.append('fecha', document.getElementById('fecha').value);
+objDatosFiltros.append('hora', document.getElementById('hora').value);
+objDatosFiltros.append('costo', document.getElementById('costo').value);
+objDatosFiltros.append('orden', document.getElementById('orden').value); // campo select u ordenamiento
 
-        fila.querySelector(".modiBtn").addEventListener("click", () => abrirFormularioModif(p, index));
-        fila.querySelector(".bajaBtn").addEventListener("click", () => {
-          if (confirm(`¿Seguro que querés borrar ${p.codProv}?`)) {
-            objProvincias.provincias.splice(index, 1);
-            guardarLocal();
-            mostrarProvincias();
-          }
-        });
-      });
+// 🔹 Llamada AJAX con fetch
+fetch('./lista.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: objDatosFiltros,
+})
+.then(response => {
+    // Verifica si la respuesta fue correcta (HTTP 200)
+    if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor');
     }
+    return response.json(); // Parseamos el JSON recibido
+})
+.then(datos => {
+    // datos.clientes → array con los clientes
+    // datos.cuenta → cantidad total
 
+    tbody.innerHTML = '';
+
+    // 🔹 Recorremos el array de clientes recibido
+    datos.clientes.forEach(cliente => {
+        const fila = document.createElement('tr');
+
+        // Creamos las celdas (td) con los datos
+        fila.innerHTML = `
+            <td>${cliente.Codcliente}</td>
+            <td>${cliente.DireccionEntrega}</td>
+            <td>${cliente.ProvinciaEntrega}</td>
+            <td>${cliente.FechaEntrega}</td>
+            <td>${cliente.HorarioEntrega}</td>
+            <td>${cliente.CostoEstimadoTransporte}</td>
+        `;
+
+        tbody.appendChild(fila);
+    });
+
+    // 🔹 Mostrar cantidad total de registros en un input o label
+    document.getElementById('totalRegistros').value = datos.cuenta;
+})
+.catch(error => {
+    alert('Error producido: ' + error.message);
+}); //falta botones de modi, foto y baja
+}
     // === BOTONES PRINCIPALES ===
     document.getElementById("cargar").addEventListener("click", mostrarProvincias);
     document.getElementById("vaciar").addEventListener("click", () => tbody.innerHTML = "");

@@ -1,24 +1,37 @@
 <?php
-// modi.php - modifica campos simples y luego actualiza binario si llega.
-require_once 'db.php';
+session_start();
+if (!isset($_SESSION['idSesion'])) {
+  header("Location: index.php");
+  exit();
+}
+require_once '../../db.php';
 $respuesta_estado = "Parte Modificacion simple de datos \n";
 
-$codProv = isset($_POST['codProv']) ? trim($_POST['codProv']) : '';
-$nombreProv = isset($_POST['nombreProv']) ? trim($_POST['nombreProv']) : '';
-$region = isset($_POST['region']) ? trim($_POST['region']) : null;
-$fechaAlta = isset($_POST['fechaAlta']) ? $_POST['fechaAlta'] : null;
-$poblacion = isset($_POST['poblacion']) ? intval($_POST['poblacion']) : 0;
+$codCliente  = isset($_POST['codCliente']) ? trim($_POST['codCliente']) : '';
+$direccion   = isset($_POST['direccion']) ? trim($_POST['direccion']) : '';
+$provincia   = isset($_POST['provincia']) ? intval($_POST['provincia']) : 0;
+$fecha       = isset($_POST['fecha']) ? $_POST['fecha'] : null;
+$hora        = isset($_POST['hora']) ? $_POST['hora'] : null;
+$costo       = isset($_POST['costo']) ? floatval($_POST['costo']) : 0.0;
 
 try {
-    $sql = "UPDATE provincias SET nombreProv=:nombreProv, region=:region, fechaAlta=:fechaAlta, poblacion=:poblacion WHERE codProv=:codProv;";
+    sleep(3);
+    $sql = "UPDATE `Logísticos_Clientes`
+        SET DirecciónEntrega = :direccion,
+            ProvinciaEntrega = :provincia,
+            FechaEntrega = :fecha,
+            HorarioEntrega = :hora,
+            CostoEstimadoTransporte = :costo
+        WHERE Codcliente = :codCliente";
     $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':nombreProv', $nombreProv);
-    $stmt->bindParam(':region', $region);
-    $stmt->bindParam(':fechaAlta', $fechaAlta);
-    $stmt->bindParam(':poblacion', $poblacion);
-    $stmt->bindParam(':codProv', $codProv);
+    $stmt->bindParam(':codCliente', $codCliente);
+    $stmt->bindParam(':direccion', $direccion);
+    $stmt->bindParam(':provincia', $provincia, PDO::PARAM_INT);
+    $stmt->bindParam(':fecha', $fecha);
+    $stmt->bindParam(':hora', $hora);
+    $stmt->bindParam(':costo', $costo);
     $stmt->execute();
-    $respuesta_estado .= "\nModificacion simple exitosa para codProv: " . $codProv;
+    $respuesta_estado .= "\nModificacion simple exitosa para codCliente: " . $codCliente;
 } catch (PDOException $e) {
     $respuesta_estado .= "\nError en modi: " . $e->getMessage();
     echo $respuesta_estado;
@@ -26,21 +39,22 @@ try {
     exit;
 }
 
-// Si llega archivo, actualizar el binario
-if(!isset($_FILES['documentoPdf'])) {
+if(!isset($_FILES['fotoEntrega'])) {
     $respuesta_estado .= "\nNo se envió file (global \$_FILES no inicializado).";
 } else {
-    if (empty($_FILES['documentoPdf']['name'])) {
+    if (empty($_FILES['fotoEntrega']['name'])) {
         $respuesta_estado .= "\nNo ha sido seleccionado ningun file para enviar!";
     } else {
-        $contenidoPdf = file_get_contents($_FILES['documentoPdf']['tmp_name']);
+        $contenidoPdf = file_get_contents($_FILES['fotoEntrega']['tmp_name']);
         try {
-            $sql2 = "UPDATE provincias SET documentoPdf = :contenidoPdf WHERE codProv = :codProv;";
+            $sql2 = "UPDATE `Logísticos_Clientes`
+                     SET FotoEntrega = :foto
+                     WHERE Codcliente = :codCliente";
             $stmt2 = $dbh->prepare($sql2);
-            $stmt2->bindParam(':contenidoPdf', $contenidoPdf, PDO::PARAM_LOB);
-            $stmt2->bindParam(':codProv', $codProv);
+            $stmt2->bindParam(':foto', $contenidoFoto, PDO::PARAM_LOB);
+            $stmt2->bindParam(':codCliente', $codCliente);
             $stmt2->execute();
-            $respuesta_estado .= "\nArchivo actualizado para codProv: " . $codProv;
+            $respuesta_estado .= "\nArchivo actualizado para codCliente: " . $codCliente;
         } catch (PDOException $e) {
             $respuesta_estado .= "\nError guardando file: " . $e->getMessage();
         }

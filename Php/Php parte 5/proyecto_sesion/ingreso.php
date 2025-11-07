@@ -36,6 +36,6 @@ echo "<p><strong>Identificativo de sesión:</strong> " . $_SESSION['idSesion'] .
 echo "<p><strong>Login de usuario:</strong> " . $_SESSION['usuario'] . "</p>";
 echo "<p><strong>Contador de sesión:</strong> " . $_SESSION['contador'] . "</p>";
 
-echo "<button onclick=\"location.href='../../Php4/provincias_crud/index.php'\">Ingrese al módulo 1 de la app</button>";
+echo "<button onclick=\"location.href='./provincias_crud/index.php'\">Ingrese al módulo 1 de la app</button>";
 echo "<button onclick=\"location.href='destruir_sesion.php'\">Terminar sesión</button>";
 ?>
