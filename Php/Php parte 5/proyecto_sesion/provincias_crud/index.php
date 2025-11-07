@@ -206,7 +206,7 @@ fetch('./lista.php', {
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: objDatosFiltros,
+    body: //objDatosFiltros,
 })
 .then(response => {
     // Verifica si la respuesta fue correcta (HTTP 200)
@@ -246,7 +246,7 @@ fetch('./lista.php', {
 }); //falta botones de modi, foto y baja
 }
     // === BOTONES PRINCIPALES ===
-    document.getElementById("cargar").addEventListener("click", mostrarProvincias);
+    document.getElementById("cargar").addEventListener("click", mostrarProvincias());
     document.getElementById("vaciar").addEventListener("click", () => tbody.innerHTML = "");
 
     // === MODAL ALTA ===
