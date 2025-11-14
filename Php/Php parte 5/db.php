@@ -1,6 +1,6 @@
 <?php
 // db.php - Ajusta estos valores según tu entorno XAMPP / MySQL
-$DB_HOST = 'localhost';
+$DB_HOST = 'srv1548.hstgr.io';
 $DB_NAME = 'u255134318_KpPDe';
 $DB_USER = 'u255134318_593yR';
 $DB_PASS = 'Dante2303$';
