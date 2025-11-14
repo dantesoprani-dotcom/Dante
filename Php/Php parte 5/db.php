@@ -1,9 +1,9 @@
 <?php
 // db.php - Ajusta estos valores según tu entorno XAMPP / MySQL
-$DB_HOST = 'srv1548.hstgr.io';
+$DB_HOST = 'localhost';
 $DB_NAME = 'u255134318_KpPDe';
 $DB_USER = 'u255134318_593yR';
-$DB_PASS = 'k9$Mhd1pJgl';
+$DB_PASS = 'Dante2303$';
 
 try {
     $dsn = "mysql:host=$DB_HOST;dbname=$DB_NAME";
