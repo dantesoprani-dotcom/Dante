@@ -41,25 +41,22 @@ try {
 
 if(!isset($_FILES['fotoEntrega'])) {
     $respuesta_estado .= "\nNo se envió file (global \$_FILES no inicializado).";
-} else {
-    if (empty($_FILES['fotoEntrega']['name'])) {
-        $respuesta_estado .= "\nNo ha sido seleccionado ningun file para enviar!";
-    } else {
-        $contenidoPdf = file_get_contents($_FILES['fotoEntrega']['tmp_name']);
-        try {
-            $sql2 = "UPDATE `Logísticos_Clientes`
-                     SET FotoEntrega = :foto
-                     WHERE Codcliente = :codCliente";
-            $stmt2 = $dbh->prepare($sql2);
-            $stmt2->bindParam(':foto', $contenidoFoto, PDO::PARAM_LOB);
-            $stmt2->bindParam(':codCliente', $codCliente);
-            $stmt2->execute();
-            $respuesta_estado .= "\nArchivo actualizado para codCliente: " . $codCliente;
-        } catch (PDOException $e) {
-            $respuesta_estado .= "\nError guardando file: " . $e->getMessage();
-        }
-    }
+} else 
+    if (!empty($_FILES['fotoEntrega']['name'])) {
+    // PASO 1: Leer archivo
+    $contenidoPdf = file_get_contents($_FILES['fotoEntrega']['tmp_name']);
+    // ↑ Variable: $contenidoPdf
+    
+    $sql2 = "UPDATE `Logísticos_Clientes`
+             SET FotoEntrega = :foto
+             WHERE Codcliente = :codCliente";
+    
+    $stmt2 = $dbh->prepare($sql2);
+    
+    // PASO 2: Usar LA MISMA VARIABLE
+    $stmt2->bindParam(':foto', $contenidoPdf, PDO::PARAM_LOB);
+    // ↑ CORRECTO: $contenidoPdf (mismo nombre)
+    
+    $stmt2->bindParam(':codCliente', $codCliente);
+    $stmt2->execute();
 }
-
-echo $respuesta_estado;
-$dbh = null;
