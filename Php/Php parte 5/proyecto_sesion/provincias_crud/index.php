@@ -145,6 +145,53 @@ if (!isset($_SESSION['idSesion'])) {
     <div class="modal-content">
       <span class="close" id="cerrarModalModif">&times;</span>
       <header><h1>Formulario de Modificación</h1></header>
+      <div class="filtros-container">
+        
+  <h3>Filtros de Búsqueda</h3>
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+    
+    <div>
+      <label for="codCliente">Código Cliente:</label>
+      <input type="text" id="codCliente" placeholder="Ej: 001">
+    </div>
+    
+    <div>
+      <label for="direccion">Dirección:</label>
+      <input type="text" id="direccion" placeholder="Plaza">
+    </div>
+    
+    <div>
+      <label for="provincia">Provincia:</label>
+      <input type="text" id="provincia" placeholder="CBA">
+    </div>
+    
+    <div>
+      <label for="fecha">Fecha:</label>
+      <input type="date" id="fecha">
+    </div>
+    
+    <div>
+      <label for="hora">Horario:</label>
+      <input type="time" id="hora">
+    </div>
+    
+    <div>
+      <label for="costo">Costo:</label>
+      <input type="number" id="costo" placeholder="3500">
+    </div>
+    
+    <div>
+      <label for="orden">Ordenar por:</label>
+      <select id="orden">
+        <option value="Codcliente">Código</option>
+        <option value="FechaEntrega">Fecha</option>
+        <option value="CostoEstimadoTransporte">Costo</option>
+      </select>
+    </div>
+    
+  </div>
+</div>
+
       <main>
         <form id="formModif">
           <div class="form-box">
@@ -170,25 +217,19 @@ if (!isset($_SESSION['idSesion'])) {
   </div>
 
   <script>
-    // === CARGA INICIAL (desde localStorage o JSON por defecto) ===
-    const datosGuardados = localStorage.getItem("provincias");
-    let objProvincias = datosGuardados
-      ? JSON.parse(datosGuardados)
-      : {
-          provincias: [
-            { codProv: "CBA", Descripcion: "Córdoba", Codcliente: "001", DireccionEntrega: "Plaza San Martín", FechaEntrega: "2025-10-20", HorarioEntrega: "10:00", CostoEstimadoTransporte: 3500 }
-          ]
-        };
-
-    const tbody = document.getElementById("datos");
-
-    // === GUARDAR EN LOCALSTORAGE ===
-    function guardarLocal() {
-      localStorage.setItem("provincias", JSON.stringify(objProvincias));
-    }
-
+  // === CARGA INICIAL de select mñostrar por alert ===
+  
     // === MOSTRAR DATOS EN TABLA ===
     function mostrarProvincias() {
+      const codClienteInput = document.getElementById('codCliente');
+     if (!codClienteInput) {
+    console.error('ERROR: Elemento #codCliente no existe');
+    alert('Error: Faltan campos de filtro en el HTML');
+    return; // Salir de la función
+  }
+  let objDatosFiltros = new URLSearchParams();
+  objDatosFiltros.append('codCliente', codClienteInput.value);
+    }
       tbody.innerHTML = "";
       tbody.innerHTML = "Esperando respuesta del servidor...";
       let objDatosFiltros = new URLSearchParams();
@@ -200,6 +241,7 @@ if (!isset($_SESSION['idSesion'])) {
       objDatosFiltros.append('costo', document.getElementById('costo').value);
       objDatosFiltros.append('orden', document.getElementById('orden').value); // campo select u ordenamiento
       alert("Datos enviados al servidor:\n\n" + objDatosFiltros.toString());
+
 // 🔹 Llamada AJAX con fetch
 fetch('./lista.php', {
     method: 'POST',
@@ -246,9 +288,9 @@ fetch('./lista.php', {
 .catch(error => {
     alert('Error producido: ' + error.message);
 }); //falta botones de modi, foto y baja
-}
+
     // === BOTONES PRINCIPALES ===
-    document.getElementById("cargar").addEventListener("click", mostrarProvincias());
+document.getElementById("cargar").addEventListener("click", mostrarProvincias);
     document.getElementById("vaciar").addEventListener("click", () => tbody.innerHTML = "");
 
     // === MODAL ALTA ===
