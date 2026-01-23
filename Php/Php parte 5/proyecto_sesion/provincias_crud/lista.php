@@ -21,18 +21,27 @@ $sql .= "ProvinciaEntrega LIKE CONCAT('%', :provincia, '%') AND ";
 $sql .= "FechaEntrega LIKE CONCAT('%', :fecha, '%') AND ";
 $sql .= "HorarioEntrega LIKE CONCAT('%', :hora, '%') AND ";
 $sql .= "CostoEstimadoTransporte LIKE CONCAT('%', :costo, '%') ";
-$sql .= "ORDER BY $orden";
+$sql .= "ORDER BY " . $orden;
+
+$camposPermitidos = [
+    'Codcliente',
+    'DirecciónEntrega',
+    'ProvinciaEntrega',
+    'FechaEntrega',
+    'HorarioEntrega',
+    'CostoEstimadoTransporte'
+];
+$orden = in_array($orden, $camposPermitidos) ? $orden : 'Codcliente';
 
 try {
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':codCliente', $codCliente);
+    $stmt = $dbh -> pepare($sql);
+   $stmt -> bindParam(':codCliente',$codCliente);
     $stmt->bindParam(':direccion', $direccion);
     $stmt->bindParam(':provincia', $provincia, PDO::PARAM_INT);
     $stmt->bindParam(':fecha', $fecha);
     $stmt->bindParam(':hora', $hora);
     $stmt->bindParam(':costo', $costo);
-    $stmt->bindParam(':orden', $orden);
-    $stmt->execute();
+   $stmt -> execute ();
     while ($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $objCliente = new stdClass();
     $objCliente->Codcliente = $fila['Codcliente'];
